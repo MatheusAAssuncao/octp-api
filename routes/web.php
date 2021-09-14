@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::any('/', function () {
+    return Redirect::away('https://octopusfit.com.br/site');
+})->name('default');
+
+Route::any('/{any}', function () {
+   return redirect()->route('default');
 });
