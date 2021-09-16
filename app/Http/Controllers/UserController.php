@@ -88,10 +88,66 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = User::findOrFail($id);
-        $data->update($request->all());
+        try {
+            $validation = Validator::make($request->all(), [
+                'name' => 'required|min:6|max:100',
+                'email' => 'email|unique:App\Models\User,email|required|max:80',
+                'cpf' => 'nullable|cpf|size:11',
+                'cnpj' => 'nullable|cnpj|size:14',
+            ]);
 
-        return response()->json(['data' => $data]);
+            if ($validation->fails()) {
+                return response()->json(['result' => false, 'message' => "Campos incorretos!", 'data' => $validation->errors()]);
+            }
+
+            $user = User::findOrFail($id);
+            $user->name = $request->input('name');
+            $user->email = $request->input('email');
+            $user->cpf = $request->input('cpf');
+            $user->cnpj = $request->input('cnpj');
+            $user->phone = $request->input('phone');
+            $user->photo = $request->input('photo');
+            $user->status = $request->input('status');
+            $user->save();
+    
+            return response()->json(['result' => true, 'data' => $user]);
+        } catch(Exception $ex) {
+            return response()->json([
+                'result' => false, 
+                'message' => "Erro ao atualizar usuário!", 
+                'ex' => $ex->getMessage()
+            ]);
+        }
+    }
+
+    public function updatePass(Request $request, $id)
+    {
+        try {
+            $validation = Validator::make($request->all(), [
+                'password' => ['required', 'min:6', 'regex:/[a-z]/', 'regex:/[0-9]/', 'regex:/[@$!%*#?&]/'],
+            ]);
+
+            if ($validation->fails()) {
+                return response()->json(
+                    ['result' => false, 
+                    'message' => "Senha incorreta. Utilize um mínimo de 6 caracteres entre letras, números e caracteres especiais!", 
+                    'data' => $validation->errors()]);
+            }
+
+            $pass = Hash::make($request->input('password'));
+
+            $user = User::findOrFail($id);
+            $user->password = $pass;
+            $user->save();
+    
+            return response()->json(['result' => true]);
+        } catch(Exception $ex) {
+            return response()->json([
+                'result' => false, 
+                'message' => "Erro ao atualizar a senha!", 
+                'ex' => $ex->getMessage()
+            ]);
+        }
     }
 
     /**
