@@ -31,6 +31,7 @@ class TemplateController extends Controller
             $validation = Validator::make($request->all(), [
                 'id_user' => 'exists:App\Models\User,id',
                 'name' => ['required', 'min:6', 'max:35'],
+                'resume' => ['nullable', 'min:6', 'max:35'],
                 'content' => 'required',
                 'status' => 'required|size:1',
             ]);
@@ -42,6 +43,7 @@ class TemplateController extends Controller
             $template = Template::create([
                 'id_user' => $request->input('id_user'),
                 'name' => $request->input('name'),
+                'resume' => $request->input('resume'),
                 'content' => $request->input('content'),
                 'status' => $request->input('status'),
             ]);
@@ -82,6 +84,7 @@ class TemplateController extends Controller
             $validation = Validator::make($request->all(), [
                 'id_user' => 'exists:App\Models\User,id',
                 'name' => ['required', 'min:6', 'max:35'],
+                'resume' => ['nullable', 'min:6', 'max:35'],
                 'content' => 'required',
                 'status' => 'required|size:1',
             ]);

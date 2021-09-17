@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Email;
+use App\Models\Template;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -150,14 +153,64 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+    public function resetPass(Request $request) {
+        $validation = Validator::make($request->all(), [
+            'email' => 'email|required|max:80',
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json(
+                ['result' => false, 
+                'message' => "E-mail em formato incorreto!", 
+                'data' => $validation->errors()]);
+        }
+
+        $email = $request->input('email');
+
+        try {
+            $_user = User::where('email', $email)->firstOrFail();
+
+            $_auth = auth()->user();
+
+            if ($_auth->email != $_user->email) {
+                throw new Exception();
+            }
+
+        } catch(Exception $ex) {
+            return response()->json([
+                'result' => false, 
+                'message' => "E-mail não encontrado ou não pertence a este usuário!", 
+                // 'ex' => $ex->getMessage()
+            ]);
+        }
+
+        $_template = Template::where('resume', 'EMAIL-RESET-SENHA')->firstOrFail();
+        $newPass = self::makePass();
+        $content = str_replace('{nova_senha}', $newPass, $_template->content);
+
+        try {
+            $mail = new Email($email, $_template->name, $content);
+            $mail->send();
+            
+            $_user->password = Hash::make($newPass);
+            $_user->save();
+
+        } catch(Exception $ex) {
+            return response()->json([
+                'result' => false, 
+                'message' => "Erro ao redefinir a senha! Entre em contato com o administrador do sistema.", 
+                // 'ex' => $ex->getMessage()
+            ]);
+        }
+        
+        return response()->json(['result' => true, 'message' => "Foi enviado um e-mail para $email com a nova senha de acesso!"]);
+    }
+
+    public static function makePass(){
+        $mi = substr(str_shuffle("abcdefghijklmnopqrstuvyxwz"), 0, 3);
+        $nu = substr(str_shuffle("0123456789"), 0, 2);
+        $si = substr(str_shuffle("@$!%*#?&"), 0, 1);
+
+        return str_shuffle($mi.$nu.$si);
     }
 }

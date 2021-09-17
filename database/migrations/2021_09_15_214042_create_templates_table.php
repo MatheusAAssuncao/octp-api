@@ -17,11 +17,11 @@ class CreateTemplatesTable extends Migration
             $table->id();
             $table->foreignId('id_user')->constrained('user');
             $table->string('name', 35);
+            $table->string('resume', 35)->nullable();
             $table->text('content');
             $table->char('status', 1)->default('A');
             $table->timestamps();
 
-            
         });
     }
 
