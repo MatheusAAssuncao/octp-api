@@ -18,6 +18,7 @@ class CreateUserTable extends Migration
             $table->string('name', 100);
             $table->string('email', 80);
             $table->string('password', 100);
+            $table->string('temp_password', 100)->nullable();
             $table->string('cpf', 11)->nullable();
             $table->string('cnpj', 14)->nullable();
             $table->string('phone', 13)->nullable();

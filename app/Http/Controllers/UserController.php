@@ -8,7 +8,6 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -123,7 +122,7 @@ class UserController extends Controller
         }
     }
 
-    public function updatePass(Request $request, $id)
+    public function updatePass(Request $request)
     {
         try {
             $validation = Validator::make($request->all(), [
@@ -139,11 +138,19 @@ class UserController extends Controller
 
             $pass = Hash::make($request->input('password'));
 
-            $user = User::findOrFail($id);
+            $user = auth('api')->user();
+            $user = User::find($user['id']);
             $user->password = $pass;
+            $user->temp_password = null;
+            $user->token = auth()->login($user);
+
             $user->save();
     
-            return response()->json(['result' => true]);
+            return response()->json([
+                'result' => true, 
+                'access_token' => $user->token,
+                'token_type' => 'bearer',
+            ]);
         } catch(Exception $ex) {
             return response()->json([
                 'result' => false, 
@@ -153,7 +160,7 @@ class UserController extends Controller
         }
     }
 
-    public function resetPass(Request $request) {
+    public function forgotPass(Request $request) {
         $validation = Validator::make($request->all(), [
             'email' => 'email|required|max:80',
         ]);
@@ -169,13 +176,6 @@ class UserController extends Controller
 
         try {
             $_user = User::where('email', $email)->firstOrFail();
-
-            $_auth = auth()->user();
-
-            if ($_auth->email != $_user->email) {
-                throw new Exception();
-            }
-
         } catch(Exception $ex) {
             return response()->json([
                 'result' => false, 
@@ -192,7 +192,7 @@ class UserController extends Controller
             $mail = new Email($email, $_template->name, $content);
             $mail->send();
             
-            $_user->password = Hash::make($newPass);
+            $_user->temp_password = $newPass;
             $_user->save();
 
         } catch(Exception $ex) {

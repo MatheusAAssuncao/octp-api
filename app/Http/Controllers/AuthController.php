@@ -27,9 +27,21 @@ class AuthController extends Controller
     {
         try {
             $credentials = request(['email', 'password']);
+            $resetPass = false;
 
             if (! $token = auth()->attempt($credentials)) {
-                throw new Exception("Unauthorized");
+                $_user = User::where('temp_password', $credentials['password'])->first();
+                if ($_user === null) {
+                    throw new Exception("Unauthorized");
+                }
+
+                $user = auth()->setToken($_user->token)->user();
+                $token = auth()->login($user);
+                if (!$token) {
+                    throw new Exception("Unauthorized");
+                } else {
+                    $resetPass = true;
+                }
             }
     
             $user = auth('api')->user();
@@ -37,7 +49,7 @@ class AuthController extends Controller
             $_user->token = $token;
             $_user->save();
     
-            return $this->respondWithToken($token);
+            return $this->respondWithToken($token, $resetPass);
         } catch (Exception $ex) {
             return response()->json(['result' => false, 'message' => "Não autorizado!", 'ex' => $ex->getMessage()], 401);
         }
@@ -82,11 +94,12 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token)
+    protected function respondWithToken($token, $resetPass = false)
     {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
+            'reset_password' => $resetPass,
             // 'expires_in' => auth()->factory()->getTTL() * 60
         ]);
     }
