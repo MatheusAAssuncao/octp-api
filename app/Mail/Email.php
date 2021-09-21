@@ -29,7 +29,5 @@ class Email
                 ->subject($this->subject)
                 ->setBody($html, 'text/html');
         });
-
-        // persistir e-mail
     }
 }
