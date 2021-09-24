@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -21,7 +20,12 @@ class User extends Authenticatable implements JWTSubject
         'cpf',
         'cnpj',
         'phone',
+        'media_facebook',
+        'media_instagram',
+        'media_whatsapp',
         'photo',
+        'terms_use',
+        'id_terms_use',
         'status',
         'token',
     ];
@@ -34,6 +38,14 @@ class User extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password',
     ];
+
+    public function photo() {
+        return $this->belongsTo(File::class, 'photo', 'id');
+    }
+
+    public function termsUse() {
+        return $this->belongsTo(File::class, 'id_tems_use', 'id');
+    }
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

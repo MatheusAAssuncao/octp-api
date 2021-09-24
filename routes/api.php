@@ -28,14 +28,18 @@ Route::group(['middleware' => 'jwt.auth', 'prefix' => 'v1'], function ($router) 
     /**
      * User
      */
-    Route::get('show', [UserController::class, 'show']); // get usuario by id
+    Route::get('user/{id}', [UserController::class, 'show']); // get usuario by id
     Route::put('user/{id}', [UserController::class, 'update']); // alterar dados de usuario
+    Route::post('user/photo/{id}', [UserController::class, 'savePhoto']); // salvar foto do usuario
+    Route::delete('user/photo/{id}', [UserController::class, 'removePhoto']); // remover foto do usuario
+    Route::post('user/term/{id}', [UserController::class, 'saveTerm']); // salvar termo de uso do usuario
+    Route::delete('user/term/{id}', [UserController::class, 'removeTerm']); // remover termo de uso do usuario
 
     /**
      * Templates
      */
     Route::post('template', [TemplateController::class, 'store']); // cadastrar template
-    Route::put('template/{id}', [TemplateController::class, 'update']); // alterar template
+    Route::post('template/{id}', [TemplateController::class, 'update']); // alterar template
 });
 
 Route::post('auth/login', [AuthController::class, 'login']); // login

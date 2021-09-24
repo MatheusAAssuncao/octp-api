@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Mail\Email;
+use App\Models\File;
 use App\Models\Template;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -53,7 +55,6 @@ class UserController extends Controller
                 'cpf' => $request->input('cpf'),
                 'cnpj' => $request->input('cnpj'),
                 'phone' => $request->input('phone'),
-                'photo' => $request->input('photo'),
                 'status' => "A",
             ]);
     
@@ -76,9 +77,19 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $data = User::findOrFail($id);
+        $_user = User::findOrFail($id);
 
-        return response()->json(['data' => $data]);
+        $_file = $_user->photo()->first();
+        if ($_file) {
+            $_user->photo = env('APP_URL').'storage/'.$_file->path;
+        }
+
+        $_file = $_user->termsUse()->first();
+        if ($_file) {
+            $_user->terms_use = env('APP_URL').'storage/'.$_file->path;
+        }
+
+        return response()->json(['data' => $_user]);
     }
 
     /**
@@ -93,9 +104,12 @@ class UserController extends Controller
         try {
             $validation = Validator::make($request->all(), [
                 'name' => 'required|min:6|max:100',
-                'email' => 'email|unique:App\Models\User,email|required|max:80',
                 'cpf' => 'nullable|cpf|size:11',
                 'cnpj' => 'nullable|cnpj|size:14',
+                'media_facebook' => 'nullable|max:50',
+                'media_instagram' => 'nullable|max:20',
+                'media_whatsapp' => 'nullable|max:20',
+                'terms_use' => 'nullable|max:255',
             ]);
 
             if ($validation->fails()) {
@@ -104,15 +118,16 @@ class UserController extends Controller
 
             $user = User::findOrFail($id);
             $user->name = $request->input('name');
-            $user->email = $request->input('email');
             $user->cpf = $request->input('cpf');
             $user->cnpj = $request->input('cnpj');
+            $user->media_facebook = $request->input('media_facebook');
+            $user->media_instagram = $request->input('media_instagram');
+            $user->media_whatsapp = $request->input('media_whatsapp');
             $user->phone = $request->input('phone');
-            $user->photo = $request->input('photo');
-            $user->status = $request->input('status');
+            $user->terms_use = $request->input('terms_use');
             $user->save();
     
-            return response()->json(['result' => true, 'data' => $user]);
+            return response()->json(['result' => true, 'data' => $request->all()]);
         } catch(Exception $ex) {
             return response()->json([
                 'result' => false, 
@@ -204,6 +219,104 @@ class UserController extends Controller
         }
         
         return response()->json(['result' => true, 'message' => "Foi enviado um e-mail para $email com a nova senha de acesso!"]);
+    }
+
+    public function savePhoto(Request $request, $id) {
+        $user = User::findOrFail($id);
+
+        $validation = Validator::make($request->all(), [
+            'photo' => 'required|mimes:png,jpg,jpeg|max:2048',
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json(['result' => false, 'message' => "Campos incorretos!", 'data' => $validation->errors()]);
+        }
+        
+        $_image = null;
+        if ($user->photo) {
+            $_image = $user->photo()->first();
+            Storage::disk('public')->delete($_image->path);
+        }
+
+        $image = $request->file('photo');
+        $_file = File::create([
+            'description' => 'Perfil',
+            'path' => $image->store('images/'.$user->id, 'public'),
+            'type' => $image->getMimeType(),
+        ]);
+        $user->photo = $_file->id;
+        $user->save();
+
+        if ($_image) {
+            $_image->delete();
+        }
+
+        return response()->json(['result' => true, 'data' => env('APP_URL').'storage/'.$_file->path]);
+    }
+
+    public function removePhoto(Request $request, $id) {
+        $user = User::findOrFail($id);
+
+        if ($user->photo) {
+            $_image = $user->photo()->first();
+            Storage::disk('public')->delete($_image->path);
+            
+            $user->photo = null;
+            $user->save();
+
+            $_image->delete();
+        }
+
+        return response()->json(['result' => true, 'message' => "Foto removida com sucesso!"]);
+    }
+
+    public function saveTerm(Request $request, $id) {
+        $user = User::findOrFail($id);
+
+        $validation = Validator::make($request->all(), [
+            'term' => 'required|mimes:pdf|max:2048',
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json(['result' => false, 'message' => "Campos incorretos!", 'data' => $validation->errors()]);
+        }
+        
+        $_term = null;
+        if ($user->id_tems_use) {
+            $_term = $user->termsUse()->first();
+            Storage::disk('public')->delete($_term->path);
+        }
+
+        $term = $request->file('term');
+        $_file = File::create([
+            'description' => 'Perfil',
+            'path' => $term->store('terms/'.$user->id, 'public'),
+            'type' => $term->getMimeType(),
+        ]);
+        $user->id_tems_use = $_file->id;
+        $user->save();
+
+        if ($_term) {
+            $_term->delete();
+        }
+
+        return response()->json(['result' => true, 'data' => env('APP_URL').'storage/'.$_file->path]);
+    }
+
+    public function removeTerm(Request $request, $id) {
+        $user = User::findOrFail($id);
+
+        if ($user->id_tems_use) {
+            $_term = $user->termsUse()->first();
+            Storage::disk('public')->delete($_term->path);
+            
+            $user->id_tems_use = null;
+            $user->save();
+
+            $_term->delete();
+        }
+
+        return response()->json(['result' => true, 'message' => "Termo removido com sucesso!"]);
     }
 
     public static function makePass(){
