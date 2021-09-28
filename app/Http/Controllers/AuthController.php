@@ -6,12 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Exception;
 
+/**
+ * @group Auth
+ *
+ * Gerenciamento de login
+ */
 class AuthController extends Controller
 {
     /**
      * Create a new AuthController instance.
      *
-     * @return void
      */
     public function __construct($email = null, $pass = null)
     {
@@ -19,9 +23,19 @@ class AuthController extends Controller
     }
 
     /**
-     * Get a JWT via given credentials.
+     * 
+     * Login
+     * 
+     * Autenticação via e-mail e senha para obter um token JTW bearer.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @bodyParam  email string required E-mail do usuário. Example: contato@octopusfit.com.br
+     * @bodyParam  password string required Senha do usuário. Example: 123!abc
+     * 
+     * @response {
+     *  "access_token": "eyaeXAi85dJhbGcdiJIUzI1NiJ9.HRwOjgXC8xMjcuMC4",
+     *  "token_type": "bearer",
+     *  "reset_password": false
+     * }
      */
     public function login()
     {
@@ -55,20 +69,24 @@ class AuthController extends Controller
         }
     }
 
-    /**
-     * Get the authenticated User.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function me()
     {
         return response()->json(auth()->user());
     }
 
     /**
-     * Log the user out (Invalidate the token).
+     * 
+     * Log-off
+     * 
+     * Faz log-off do usuário.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @authenticated
+     * 
+     * @response {
+     *  "result": true,
+     *  "message": "Usuário deslogado!"
+     * }
+     * 
      */
     public function logout()
     {
@@ -78,9 +96,18 @@ class AuthController extends Controller
     }
 
     /**
-     * Refresh a token.
+     * 
+     * Refresh
+     * 
+     * Atualiza o Token do usuário logado.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @authenticated
+     * 
+     * @response {
+     *  "access_token": "eyaeXAi85dJhbGcdiJIUzI1NiJ9.HRwOjgXC8xMjcuMC4",
+     *  "token_type": "bearer",
+     *  "reset_password": false
+     * }
      */
     public function refresh()
     {
@@ -90,9 +117,6 @@ class AuthController extends Controller
     /**
      * Get the token array structure.
      *
-     * @param  string $token
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     protected function respondWithToken($token, $resetPass = false)
     {

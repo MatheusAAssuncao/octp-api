@@ -12,7 +12,6 @@ class TemplateController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -22,8 +21,6 @@ class TemplateController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -61,8 +58,6 @@ class TemplateController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Template  $template
-     * @return \Illuminate\Http\Response
      */
     public function show(Template $template)
     {
@@ -72,9 +67,6 @@ class TemplateController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
@@ -108,8 +100,6 @@ class TemplateController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Template  $template
-     * @return \Illuminate\Http\Response
      */
     public function destroy(Template $template)
     {

@@ -12,12 +12,16 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * @group User
+ *
+ * Gerenciamento de usuário
+ */
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -27,10 +31,23 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 
+     * Cadastrar novo usuário
+     * 
+     * Cadastra um novo usuário Personal Trainer. O response em caso de sucesso 200 é a própria requisição dentro de 'data'.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @bodyParam  name string required Nome do usuário. Example: Matheus
+     * @bodyParam  email string required E-mail do usuário usado para acesso ao app. Example: contato@octopusfit.com.br
+     * @bodyParam  password string required Senha de 6 caracteres com letras, números e caracteres especiais. Example: 123!abc
+     * @bodyParam  cpf string CPF sem acentuação. Example: 12345678980
+     * @bodyParam  cnpj string CNPJ sem acentuação.
+     * 
+     * @response {
+     *   "result": true,
+     *   "data": {
+     *   },
+     *   "message": "Mensagem de erro se houver"
+     * }
      */
     public function store(Request $request)
     {
@@ -70,14 +87,40 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 
+     * Exibir dados do usuário
+     * 
+     * Recupera as informações do usuário logado.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @authenticated
+     * 
+     * @response {
+     *   "result": true,
+     *   "data": {
+     *       "id": 1,
+     *       "name": "Matheus",
+     *       "email": "contato@octopusfit.com.br",
+     *       "temp_password": null,
+     *       "cpf": "12345678980",
+     *       "cnpj": null,
+     *       "phone": null,
+     *       "photo": "http:\/\/127.0.0.1:8000\/storage\/images\/1\/6XuZiqUlIVqsuPC9aXZSaV7d7cvmltxWg79izMTS.jpg",
+     *       "media_facebook": "https:\/\/facebook.com\/usuario",
+     *       "media_instagram": null,
+     *       "media_whatsapp": null,
+     *       "terms_use": "http:\/\/127.0.0.1:8000\/storage\/terms\/1\/byWMlIyaSD8KAJSve2tQdGtzwIPqH4LIgBpLe2ED.pdf",
+     *       "id_tems_use": 1,
+     *       "status": "A",
+     *       "token": "eyaeXAi85dJhbGcdiJIUzI1NiJ9.HRwOjgXC8xMjcuMC4",
+     *       "created_at": "2021-09-24T22:47:24.000000Z",
+     *       "updated_at": "2021-09-28T01:24:23.000000Z"
+     *   }
+     * }
      */
-    public function show($id)
+    public function show()
     {
-        $_user = User::findOrFail($id);
+        $user = auth('api')->user();
+        $_user = User::findOrFail($user['id']);
 
         $_file = $_user->photo()->first();
         if ($_file) {
@@ -89,19 +132,38 @@ class UserController extends Controller
             $_user->terms_use = env('APP_URL').'storage/'.$_file->path;
         }
 
-        return response()->json(['data' => $_user]);
+        return response()->json(['result' => true, 'data' => $_user]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * 
+     * Alterar dados do usuário
+     * 
+     * Altera as informações do usuário logado. O response em caso de sucesso 200 é a própria requisição dentro de 'data'.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @authenticated
+     * 
+     * @bodyParam  name string required Nome do usuário. Example: Matheus
+     * @bodyParam  cpf string CPF sem acentuação. Example: 12345678980
+     * @bodyParam  phone string Número de telefone sem acentuação. Example: 19991501844
+     * @bodyParam  media_facebook string URL do Facebook do usuário. Example: https://facebook.com/usuario
+     * @bodyParam  media_instagram string Conta no Instagram do usuário. Example: @linchester
+     * @bodyParam  media_whatsapp string Número do WhatsApp do usuário. Example: 19991501844
+     * @bodyParam  terms_use string Termo de uso digitado (caso ele não opte pelo upload do PDF).
+     * 
+     * @response {
+     *   "result": true,
+     *   "data": {
+     *   },
+     *   "message": "Mensagem de erro se houver"
+     * }
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         try {
+            $user = auth('api')->user();
+            $_user = User::findOrFail($user['id']);
+
             $validation = Validator::make($request->all(), [
                 'name' => 'required|min:6|max:100',
                 'cpf' => 'nullable|cpf|size:11',
@@ -116,16 +178,15 @@ class UserController extends Controller
                 return response()->json(['result' => false, 'message' => "Campos incorretos!", 'data' => $validation->errors()]);
             }
 
-            $user = User::findOrFail($id);
-            $user->name = $request->input('name');
-            $user->cpf = $request->input('cpf');
-            $user->cnpj = $request->input('cnpj');
-            $user->media_facebook = $request->input('media_facebook');
-            $user->media_instagram = $request->input('media_instagram');
-            $user->media_whatsapp = $request->input('media_whatsapp');
-            $user->phone = $request->input('phone');
-            $user->terms_use = $request->input('terms_use');
-            $user->save();
+            $_user->name = $request->input('name');
+            $_user->cpf = $request->input('cpf');
+            $_user->cnpj = $request->input('cnpj');
+            $_user->media_facebook = $request->input('media_facebook');
+            $_user->media_instagram = $request->input('media_instagram');
+            $_user->media_whatsapp = $request->input('media_whatsapp');
+            $_user->phone = $request->input('phone');
+            $_user->terms_use = $request->input('terms_use');
+            $_user->save();
     
             return response()->json(['result' => true, 'data' => $request->all()]);
         } catch(Exception $ex) {
@@ -137,9 +198,29 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * 
+     * Alterar senha
+     * 
+     * Altera a senha de um usuário.
+     *
+     * @authenticated
+     * 
+     * @bodyParam  password string required Senha de 6 caracteres com letras, números e caracteres especiais. Example: 123!abc
+     * 
+     * @response {
+     *  "result": true,
+     *  "message": "Alguma mensagem de erro, se existir.",
+     *  "access_token": "eyaeXAi85dJhbGcdiJIUzI1NiJ9.HRwOjgXC8xMjcuMC4",
+     *  "token_type": "bearer"
+     * }
+     */
     public function updatePass(Request $request)
     {
         try {
+            $user = auth('api')->user();
+            $user = User::findOrFail($user['id']);
+
             $validation = Validator::make($request->all(), [
                 'password' => ['required', 'min:6', 'regex:/[a-z]/', 'regex:/[0-9]/', 'regex:/[@$!%*#?&]/'],
             ]);
@@ -153,8 +234,6 @@ class UserController extends Controller
 
             $pass = Hash::make($request->input('password'));
 
-            $user = auth('api')->user();
-            $user = User::find($user['id']);
             $user->password = $pass;
             $user->temp_password = null;
             $user->token = auth()->login($user);
@@ -175,6 +254,20 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * 
+     * Redefinir senha
+     * 
+     * Funcionalidade da tela inicial para redefinição de senha por esquecimento. 
+     * Depois do primeiro login com a nova senha, a chave 'reset_password' ficará como true e o app deverá direcionar o usuário para uma tela onde deverá ser escolhida a senha definitiva. Para tanto, chamar o endpoint 'Alterar senha'.
+     *
+     * @bodyParam  email string required E-mail do usuário usado para acesso ao app. Example: contato@octopusfit.com.br
+     * 
+     * @response {
+     *  "result": true,
+     *  "message": "Foi enviado um e-mail para $email com a nova senha de acesso!"
+     * }
+     */
     public function forgotPass(Request $request) {
         $validation = Validator::make($request->all(), [
             'email' => 'email|required|max:80',
@@ -221,8 +314,26 @@ class UserController extends Controller
         return response()->json(['result' => true, 'message' => "Foi enviado um e-mail para $email com a nova senha de acesso!"]);
     }
 
-    public function savePhoto(Request $request, $id) {
-        $user = User::findOrFail($id);
+    /**
+     * 
+     * Salvar imagem de perfil
+     * 
+     * Salva a imagem de perfil do usuário.
+     *
+     * @authenticated
+     * 
+     * @bodyParam  photo file required Imagem em png ou jpg com maximo de 2048 kb. No-example
+     * 
+     * @response {
+     *   "result": true,
+     *   "data": {
+     *     "photo": "http:\/\/127.0.0.1:8000\/storage\/images\/1\/6XuZiqUlIVqsuPC9aXZSaV7d7cvmltxWg79izMTS.jpg"
+     *   }
+     * }
+     */
+    public function savePhoto(Request $request) {
+        $user = auth('api')->user();
+        $user = User::findOrFail($user['id']);
 
         $validation = Validator::make($request->all(), [
             'photo' => 'required|mimes:png,jpg,jpeg|max:2048',
@@ -251,11 +362,25 @@ class UserController extends Controller
             $_image->delete();
         }
 
-        return response()->json(['result' => true, 'data' => env('APP_URL').'storage/'.$_file->path]);
+        return response()->json(['result' => true, 'data' => ['photo' => env('APP_URL').'storage/'.$_file->path]]);
     }
 
-    public function removePhoto(Request $request, $id) {
-        $user = User::findOrFail($id);
+    /**
+     * 
+     * Remover imagem de perfil
+     * 
+     * Remove a imagem de perfil do usuário.
+     *
+     * @authenticated
+     * 
+     * @response {
+     *   "result": true,
+     *   "message": "Foto removida com sucesso!"
+     * }
+     */
+    public function removePhoto(Request $request) {
+        $user = auth('api')->user();
+        $user = User::findOrFail($user['id']);
 
         if ($user->photo) {
             $_image = $user->photo()->first();
@@ -270,8 +395,26 @@ class UserController extends Controller
         return response()->json(['result' => true, 'message' => "Foto removida com sucesso!"]);
     }
 
-    public function saveTerm(Request $request, $id) {
-        $user = User::findOrFail($id);
+    /**
+     * 
+     * Salvar termo de uso
+     * 
+     * Salva o PDF do termo de uso escolhido pelo usuário via upload.
+     *
+     * @authenticated
+     * 
+     * @bodyParam  terms_use file required Deve ser um PDF com maximo de 2048 kb. No-example
+     * 
+     * @response {
+     *   "result": true,
+     *   "data": {
+     *     "terms_use": "http:\/\/127.0.0.1:8000\/storage\/terms\/1\/6XuZiqUlIVqsuPC9aXZSaV7d7cvmltxWg79izMTS.pdf"
+     *   }
+     * }
+     */
+    public function saveTerm(Request $request) {
+        $user = auth('api')->user();
+        $user = User::findOrFail($user['id']);
 
         $validation = Validator::make($request->all(), [
             'term' => 'required|mimes:pdf|max:2048',
@@ -287,7 +430,7 @@ class UserController extends Controller
             Storage::disk('public')->delete($_term->path);
         }
 
-        $term = $request->file('term');
+        $term = $request->file('terms_use');
         $_file = File::create([
             'description' => 'Perfil',
             'path' => $term->store('terms/'.$user->id, 'public'),
@@ -300,11 +443,25 @@ class UserController extends Controller
             $_term->delete();
         }
 
-        return response()->json(['result' => true, 'data' => env('APP_URL').'storage/'.$_file->path]);
+        return response()->json(['result' => true, 'data' => ['terms_use' => env('APP_URL').'storage/'.$_file->path]]);
     }
 
-    public function removeTerm(Request $request, $id) {
-        $user = User::findOrFail($id);
+    /**
+     * 
+     * Remover termo de uso
+     * 
+     * Remove o arquivo PDF do termo de uso do usuário.
+     *
+     * @authenticated
+     * 
+     * @response {
+     *   "result": true,
+     *   "message": "Termo removido com sucesso!"
+     * }
+     */
+    public function removeTerm(Request $request) {
+        $user = auth('api')->user();
+        $user = User::findOrFail($user['id']);
 
         if ($user->id_tems_use) {
             $_term = $user->termsUse()->first();

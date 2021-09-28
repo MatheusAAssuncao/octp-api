@@ -21,25 +21,24 @@ Route::group(['middleware' => 'jwt.auth', 'prefix' => 'v1'], function ($router) 
      * Auth
      */
     Route::post('auth/logout', [AuthController::class, 'logout']); // logout
-    Route::get('auth/me', [AuthController::class, 'me']); // informar usuario by token
     Route::post('auth/refresh', [AuthController::class, 'refresh']); // atualizar token
-    Route::put('auth/pass', [UserController::class, 'updatePass']); // alterar senha
 
     /**
      * User
      */
-    Route::get('user/{id}', [UserController::class, 'show']); // get usuario by id
-    Route::put('user/{id}', [UserController::class, 'update']); // alterar dados de usuario
-    Route::post('user/photo/{id}', [UserController::class, 'savePhoto']); // salvar foto do usuario
-    Route::delete('user/photo/{id}', [UserController::class, 'removePhoto']); // remover foto do usuario
-    Route::post('user/term/{id}', [UserController::class, 'saveTerm']); // salvar termo de uso do usuario
-    Route::delete('user/term/{id}', [UserController::class, 'removeTerm']); // remover termo de uso do usuario
+    Route::put('user/pass', [UserController::class, 'updatePass']); // alterar senha
+    Route::get('user', [UserController::class, 'show']); // get usuario by id
+    Route::put('user', [UserController::class, 'update']); // alterar dados de usuario
+    Route::post('user/photo', [UserController::class, 'savePhoto']); // salvar foto do usuario
+    Route::delete('user/photo', [UserController::class, 'removePhoto']); // remover foto do usuario
+    Route::post('user/term', [UserController::class, 'saveTerm']); // salvar termo de uso do usuario
+    Route::delete('user/term', [UserController::class, 'removeTerm']); // remover termo de uso do usuario
 
     /**
      * Templates
      */
-    Route::post('template', [TemplateController::class, 'store']); // cadastrar template
-    Route::post('template/{id}', [TemplateController::class, 'update']); // alterar template
+    // Route::post('template', [TemplateController::class, 'store']); // cadastrar template
+    // Route::put('template/{id}', [TemplateController::class, 'update']); // alterar template
 });
 
 Route::post('auth/login', [AuthController::class, 'login']); // login
