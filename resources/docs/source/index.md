@@ -16,7 +16,7 @@ toc_footers:
 # Info
 
 Welcome to the generated API reference.
-[Get Postman Collection](http://127.0.0.1:8000/docs/collection.json)
+[Get Postman Collection](http://octopusfit.com.br/docs/collection.json)
 
 <!-- END_INFO -->
 
@@ -34,7 +34,7 @@ Faz log-off do usuário.
 
 ```bash
 curl -X POST \
-    "http://127.0.0.1:8000/api/v1/auth/logout" \
+    "https://octopusfit.com.br/api/v1/auth/logout" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}"
@@ -42,7 +42,7 @@ curl -X POST \
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/v1/auth/logout"
+    "https://octopusfit.com.br/api/v1/auth/logout"
 );
 
 let headers = {
@@ -85,7 +85,7 @@ Atualiza o Token do usuário logado.
 
 ```bash
 curl -X POST \
-    "http://127.0.0.1:8000/api/v1/auth/refresh" \
+    "https://octopusfit.com.br/api/v1/auth/refresh" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}"
@@ -93,7 +93,7 @@ curl -X POST \
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/v1/auth/refresh"
+    "https://octopusfit.com.br/api/v1/auth/refresh"
 );
 
 let headers = {
@@ -136,7 +136,7 @@ Autenticação via e-mail e senha para obter um token JTW bearer.
 
 ```bash
 curl -X POST \
-    "http://127.0.0.1:8000/api/auth/login" \
+    "https://octopusfit.com.br/api/auth/login" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}" \
@@ -146,7 +146,7 @@ curl -X POST \
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/auth/login"
+    "https://octopusfit.com.br/api/auth/login"
 );
 
 let headers = {
@@ -205,7 +205,7 @@ Altera a senha de um usuário.
 
 ```bash
 curl -X PUT \
-    "http://127.0.0.1:8000/api/v1/user/pass" \
+    "https://octopusfit.com.br/api/v1/user/pass" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}" \
@@ -215,7 +215,7 @@ curl -X PUT \
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/v1/user/pass"
+    "https://octopusfit.com.br/api/v1/user/pass"
 );
 
 let headers = {
@@ -269,7 +269,7 @@ Recupera as informações do usuário logado.
 
 ```bash
 curl -X GET \
-    -G "http://127.0.0.1:8000/api/v1/user" \
+    -G "https://octopusfit.com.br/api/v1/user" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}"
@@ -277,7 +277,7 @@ curl -X GET \
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/v1/user"
+    "https://octopusfit.com.br/api/v1/user"
 );
 
 let headers = {
@@ -338,17 +338,17 @@ Altera as informações do usuário logado. O response em caso de sucesso 200 é
 
 ```bash
 curl -X PUT \
-    "http://127.0.0.1:8000/api/v1/user" \
+    "https://octopusfit.com.br/api/v1/user" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}" \
-    -d '{"name":"Matheus","cpf":"12345678980","phone":"19991501844","media_facebook":"https:\/\/facebook.com\/usuario","media_instagram":"@linchester","media_whatsapp":"19991501844","terms_use":"accusamus"}'
+    -d '{"name":"Matheus","cpf":"12345678980","phone":"19991501844","media_facebook":"https:\/\/facebook.com\/usuario","media_instagram":"@linchester","media_whatsapp":"19991501844","terms_use":"sequi"}'
 
 ```
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/v1/user"
+    "https://octopusfit.com.br/api/v1/user"
 );
 
 let headers = {
@@ -364,7 +364,7 @@ let body = {
     "media_facebook": "https:\/\/facebook.com\/usuario",
     "media_instagram": "@linchester",
     "media_whatsapp": "19991501844",
-    "terms_use": "accusamus"
+    "terms_use": "sequi"
 }
 
 fetch(url, {
@@ -413,7 +413,7 @@ Salva a imagem de perfil do usuário.
 
 ```bash
 curl -X POST \
-    "http://127.0.0.1:8000/api/v1/user/photo" \
+    "https://octopusfit.com.br/api/v1/user/photo" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}" \
@@ -422,7 +422,7 @@ curl -X POST \
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/v1/user/photo"
+    "https://octopusfit.com.br/api/v1/user/photo"
 );
 
 let headers = {
@@ -472,7 +472,7 @@ Remove a imagem de perfil do usuário.
 
 ```bash
 curl -X DELETE \
-    "http://127.0.0.1:8000/api/v1/user/photo" \
+    "https://octopusfit.com.br/api/v1/user/photo" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}"
@@ -480,7 +480,7 @@ curl -X DELETE \
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/v1/user/photo"
+    "https://octopusfit.com.br/api/v1/user/photo"
 );
 
 let headers = {
@@ -523,7 +523,7 @@ Salva o PDF do termo de uso escolhido pelo usuário via upload.
 
 ```bash
 curl -X POST \
-    "http://127.0.0.1:8000/api/v1/user/term" \
+    "https://octopusfit.com.br/api/v1/user/term" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}" \
@@ -532,7 +532,7 @@ curl -X POST \
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/v1/user/term"
+    "https://octopusfit.com.br/api/v1/user/term"
 );
 
 let headers = {
@@ -582,7 +582,7 @@ Remove o arquivo PDF do termo de uso do usuário.
 
 ```bash
 curl -X DELETE \
-    "http://127.0.0.1:8000/api/v1/user/term" \
+    "https://octopusfit.com.br/api/v1/user/term" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}"
@@ -590,7 +590,7 @@ curl -X DELETE \
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/v1/user/term"
+    "https://octopusfit.com.br/api/v1/user/term"
 );
 
 let headers = {
@@ -632,17 +632,17 @@ Cadastra um novo usuário Personal Trainer. O response em caso de sucesso 200 é
 
 ```bash
 curl -X POST \
-    "http://127.0.0.1:8000/api/user" \
+    "https://octopusfit.com.br/api/user" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}" \
-    -d '{"name":"Matheus","email":"contato@octopusfit.com.br","password":"123!abc","cpf":"12345678980","cnpj":"velit"}'
+    -d '{"name":"Matheus","email":"contato@octopusfit.com.br","password":"123!abc","cpf":"12345678980","cnpj":"illum"}'
 
 ```
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/user"
+    "https://octopusfit.com.br/api/user"
 );
 
 let headers = {
@@ -656,7 +656,7 @@ let body = {
     "email": "contato@octopusfit.com.br",
     "password": "123!abc",
     "cpf": "12345678980",
-    "cnpj": "velit"
+    "cnpj": "illum"
 }
 
 fetch(url, {
@@ -703,7 +703,7 @@ Depois do primeiro login com a nova senha, a chave 'reset_password' ficará como
 
 ```bash
 curl -X POST \
-    "http://127.0.0.1:8000/api/user/forgot-pass" \
+    "https://octopusfit.com.br/api/user/forgot-pass" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}" \
@@ -713,7 +713,7 @@ curl -X POST \
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/api/user/forgot-pass"
+    "https://octopusfit.com.br/api/user/forgot-pass"
 );
 
 let headers = {
@@ -765,7 +765,7 @@ Parameter | Type | Status | Description
 
 ```bash
 curl -X GET \
-    -G "http://127.0.0.1:8000/sanctum/csrf-cookie" \
+    -G "https://octopusfit.com.br/sanctum/csrf-cookie" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}"
@@ -773,7 +773,7 @@ curl -X GET \
 
 ```javascript
 const url = new URL(
-    "http://127.0.0.1:8000/sanctum/csrf-cookie"
+    "https://octopusfit.com.br/sanctum/csrf-cookie"
 );
 
 let headers = {
