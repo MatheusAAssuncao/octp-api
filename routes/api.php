@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -28,11 +30,16 @@ Route::group(['middleware' => 'jwt.auth', 'prefix' => 'v1'], function ($router) 
      */
     Route::put('user/pass', [UserController::class, 'updatePass']); // alterar senha
     Route::get('user', [UserController::class, 'show']); // get usuario by id
-    Route::put('user', [UserController::class, 'update']); // alterar dados de usuario
     Route::post('user/photo', [UserController::class, 'savePhoto']); // salvar foto do usuario
     Route::delete('user/photo', [UserController::class, 'removePhoto']); // remover foto do usuario
     Route::post('user/term', [UserController::class, 'saveTerm']); // salvar termo de uso do usuario
     Route::delete('user/term', [UserController::class, 'removeTerm']); // remover termo de uso do usuario
+
+    /**
+     * Teacher
+     */
+    Route::put('teacher', [TeacherController::class, 'update']); // alterar dados do professor
+    Route::post('teacher/new-student', [TeacherController::class, 'newStudent']); // convida um novo aluno
 
     /**
      * Templates

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -25,7 +26,8 @@ class User extends Authenticatable implements JWTSubject
         'media_whatsapp',
         'photo',
         'terms_use',
-        'id_terms_use',
+        'type',
+        'genre',
         'status',
         'token',
     ];
@@ -36,7 +38,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password',
+        'password', 'temp_password', 'id_terms_use'
     ];
 
     public function photo() {
@@ -44,7 +46,23 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function termsUse() {
-        return $this->belongsTo(File::class, 'id_tems_use', 'id');
+        return $this->belongsTo(File::class, 'id_terms_use', 'id');
+    }
+
+    public function isTeacher() {
+        return $this->type == "T";
+    }
+
+    public function isStudent() {
+        return $this->type == "S";
+    }
+
+    public function getDtBornAttribute($value) {
+        return $value ? Carbon::createFromFormat('Y-m-d', $value)->format('d/m/Y') : null;
+    }
+
+    public function setDtBornAttribute($value) {
+        $this->attributes['dt_born'] = $value ? Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d') : null;
     }
 
     /**

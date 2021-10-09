@@ -27,8 +27,11 @@ class CreateUserTable extends Migration
             $table->string('media_instagram', 20)->nullable();
             $table->string('media_whatsapp', 20)->nullable();
             $table->string('terms_use', 255)->nullable();
-            $table->foreignId('id_tems_use')->nullable()->constrained('files');
-            $table->char('status', 1)->default('A');
+            $table->foreignId('id_terms_use')->nullable()->constrained('files');
+            $table->char('status', 1)->default('A')->comment('A - Active, I - Inative');
+            $table->char('genre', 1)->default('O')->comment('M - Masculino, F - Feminino, O - Outro');
+            $table->date('dt_born')->nullable();
+            $table->char('type', 1)->default('T')->comment('T - Teacher, S - Student');
             $table->string('token', 500)->nullable();
             $table->timestamps();
 

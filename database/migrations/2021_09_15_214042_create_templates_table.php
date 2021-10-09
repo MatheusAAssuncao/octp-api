@@ -16,10 +16,10 @@ class CreateTemplatesTable extends Migration
         Schema::create('templates', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_user')->constrained('user');
-            $table->string('name', 35);
-            $table->string('resume', 35)->nullable();
+            $table->string('name', 40);
+            $table->string('resume', 40)->nullable();
             $table->text('content');
-            $table->char('status', 1)->default('A');
+            $table->char('status', 1)->default('A')->comment('A - Active, I - Inative');
             $table->timestamps();
 
         });
