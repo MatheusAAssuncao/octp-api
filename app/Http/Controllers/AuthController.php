@@ -29,7 +29,7 @@ class AuthController extends Controller
      * Autenticação via e-mail e senha para obter um token JTW bearer.
      *
      * @bodyParam  email string required E-mail do usuário. Example: contato@octopusfit.com.br
-     * @bodyParam  password string required Senha do usuário. Example: 123!abc
+     * @bodyParam  password string required Senha do usuário. Example: 123!123
      * 
      * @response {
      *  "access_token": "eyaeXAi85dJhbGcdiJIUzI1NiJ9.HRwOjgXC8xMjcuMC4",

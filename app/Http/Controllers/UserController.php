@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Mail\Email;
 use App\Models\File;
+use App\Models\Student;
+use App\Models\Teacher;
 use App\Models\Template;
 use App\Models\User;
+use App\Models\Util;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -72,6 +75,7 @@ class UserController extends Controller
                 'cpf' => $request->input('cpf'),
                 'cnpj' => $request->input('cnpj'),
                 'phone' => $request->input('phone'),
+                'type' => "T",
                 'status' => "A",
             ]);
     
@@ -90,7 +94,7 @@ class UserController extends Controller
      * 
      * Exibir dados do usuário
      * 
-     * Recupera as informações do usuário logado.
+     * Recupera as informações do usuário logado. Alguns itens podem variar dependendo do tipo de usuário logado: Professor (T) ou Aluno (S). Por exemplo, o campo terms_use só existe para os professores.
      *
      * @authenticated
      * 
@@ -100,7 +104,6 @@ class UserController extends Controller
      *       "id": 1,
      *       "name": "Matheus",
      *       "email": "contato@octopusfit.com.br",
-     *       "temp_password": null,
      *       "cpf": "12345678980",
      *       "cnpj": null,
      *       "phone": null,
@@ -109,8 +112,9 @@ class UserController extends Controller
      *       "media_instagram": null,
      *       "media_whatsapp": null,
      *       "terms_use": "http:\/\/127.0.0.1:8000\/storage\/terms\/1\/byWMlIyaSD8KAJSve2tQdGtzwIPqH4LIgBpLe2ED.pdf",
-     *       "id_tems_use": 1,
+     *       "genre": "M",
      *       "status": "A",
+     *       "type": "T",
      *       "token": "eyaeXAi85dJhbGcdiJIUzI1NiJ9.HRwOjgXC8xMjcuMC4",
      *       "created_at": "2021-09-24T22:47:24.000000Z",
      *       "updated_at": "2021-09-28T01:24:23.000000Z"
@@ -119,83 +123,24 @@ class UserController extends Controller
      */
     public function show()
     {
-        $user = auth('api')->user();
-        $_user = User::findOrFail($user['id']);
+        $_user = auth('api')->user();
+
+        if ($_user->isTeacher()) {
+            $_user = Teacher::where('id', $_user->id)->first();
+            $_file = $_user->termsUse()->first();
+            if ($_file) {
+                $_user->terms_use = env('APP_URL').'storage/'.$_file->path;
+            }
+        } else {
+            $_user = Student::where('id', $_user->id)->first();
+        }
 
         $_file = $_user->photo()->first();
         if ($_file) {
             $_user->photo = env('APP_URL').'storage/'.$_file->path;
         }
 
-        $_file = $_user->termsUse()->first();
-        if ($_file) {
-            $_user->terms_use = env('APP_URL').'storage/'.$_file->path;
-        }
-
         return response()->json(['result' => true, 'data' => $_user]);
-    }
-
-    /**
-     * 
-     * Alterar dados do usuário
-     * 
-     * Altera as informações do usuário logado. O response em caso de sucesso 200 é a própria requisição dentro de 'data'.
-     *
-     * @authenticated
-     * 
-     * @bodyParam  name string required Nome do usuário. Example: Matheus
-     * @bodyParam  cpf string CPF sem acentuação. Example: 12345678980
-     * @bodyParam  phone string Número de telefone sem acentuação. Example: 19991501844
-     * @bodyParam  media_facebook string URL do Facebook do usuário. Example: https://facebook.com/usuario
-     * @bodyParam  media_instagram string Conta no Instagram do usuário. Example: @linchester
-     * @bodyParam  media_whatsapp string Número do WhatsApp do usuário. Example: 19991501844
-     * @bodyParam  terms_use string Termo de uso digitado (caso ele não opte pelo upload do PDF).
-     * 
-     * @response {
-     *   "result": true,
-     *   "data": {
-     *   },
-     *   "message": "Mensagem de erro se houver"
-     * }
-     */
-    public function update(Request $request)
-    {
-        try {
-            $user = auth('api')->user();
-            $_user = User::findOrFail($user['id']);
-
-            $validation = Validator::make($request->all(), [
-                'name' => 'required|min:6|max:100',
-                'cpf' => 'nullable|cpf|size:11',
-                'cnpj' => 'nullable|cnpj|size:14',
-                'media_facebook' => 'nullable|max:50',
-                'media_instagram' => 'nullable|max:20',
-                'media_whatsapp' => 'nullable|max:20',
-                'terms_use' => 'nullable|max:255',
-            ]);
-
-            if ($validation->fails()) {
-                return response()->json(['result' => false, 'message' => "Campos incorretos!", 'data' => $validation->errors()]);
-            }
-
-            $_user->name = $request->input('name');
-            $_user->cpf = $request->input('cpf');
-            $_user->cnpj = $request->input('cnpj');
-            $_user->media_facebook = $request->input('media_facebook');
-            $_user->media_instagram = $request->input('media_instagram');
-            $_user->media_whatsapp = $request->input('media_whatsapp');
-            $_user->phone = $request->input('phone');
-            $_user->terms_use = $request->input('terms_use');
-            $_user->save();
-    
-            return response()->json(['result' => true, 'data' => $request->all()]);
-        } catch(Exception $ex) {
-            return response()->json([
-                'result' => false, 
-                'message' => "Erro ao atualizar usuário!", 
-                'ex' => $ex->getMessage()
-            ]);
-        }
     }
 
     /**
@@ -219,7 +164,6 @@ class UserController extends Controller
     {
         try {
             $user = auth('api')->user();
-            $user = User::findOrFail($user['id']);
 
             $validation = Validator::make($request->all(), [
                 'password' => ['required', 'min:6', 'regex:/[a-z]/', 'regex:/[0-9]/', 'regex:/[@$!%*#?&]/'],
@@ -293,7 +237,7 @@ class UserController extends Controller
         }
 
         $_template = Template::where('resume', 'EMAIL-RESET-SENHA')->firstOrFail();
-        $newPass = self::makePass();
+        $newPass = Util::makePass();
         $content = str_replace('{nova_senha}', $newPass, $_template->content);
 
         try {
@@ -333,7 +277,6 @@ class UserController extends Controller
      */
     public function savePhoto(Request $request) {
         $user = auth('api')->user();
-        $user = User::findOrFail($user['id']);
 
         $validation = Validator::make($request->all(), [
             'photo' => 'required|mimes:png,jpg,jpeg|max:2048',
@@ -414,10 +357,9 @@ class UserController extends Controller
      */
     public function saveTerm(Request $request) {
         $user = auth('api')->user();
-        $user = User::findOrFail($user['id']);
 
         $validation = Validator::make($request->all(), [
-            'term' => 'required|mimes:pdf|max:2048',
+            'terms_use' => 'required|mimes:pdf|max:2048',
         ]);
 
         if ($validation->fails()) {
@@ -425,7 +367,7 @@ class UserController extends Controller
         }
         
         $_term = null;
-        if ($user->id_tems_use) {
+        if ($user->id_terms_use) {
             $_term = $user->termsUse()->first();
             Storage::disk('public')->delete($_term->path);
         }
@@ -436,7 +378,7 @@ class UserController extends Controller
             'path' => $term->store('terms/'.$user->id, 'public'),
             'type' => $term->getMimeType(),
         ]);
-        $user->id_tems_use = $_file->id;
+        $user->id_terms_use = $_file->id;
         $user->save();
 
         if ($_term) {
@@ -461,26 +403,17 @@ class UserController extends Controller
      */
     public function removeTerm(Request $request) {
         $user = auth('api')->user();
-        $user = User::findOrFail($user['id']);
 
-        if ($user->id_tems_use) {
+        if ($user->id_terms_use) {
             $_term = $user->termsUse()->first();
             Storage::disk('public')->delete($_term->path);
             
-            $user->id_tems_use = null;
+            $user->id_terms_use = null;
             $user->save();
 
             $_term->delete();
         }
 
         return response()->json(['result' => true, 'message' => "Termo removido com sucesso!"]);
-    }
-
-    public static function makePass(){
-        $mi = substr(str_shuffle("abcdefghijklmnopqrstuvyxwz"), 0, 3);
-        $nu = substr(str_shuffle("0123456789"), 0, 2);
-        $si = substr(str_shuffle("@$!%*#?&"), 0, 1);
-
-        return str_shuffle($mi.$nu.$si);
     }
 }

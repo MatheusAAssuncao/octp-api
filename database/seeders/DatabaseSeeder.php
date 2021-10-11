@@ -22,13 +22,22 @@ class DatabaseSeeder extends Seeder
             'name' => "Personal Demo",
             'email' => "contato@octopusfit.com.br",
             'password' => Hash::make('123!123'),
+            'type' => 'T',
         ]);
 
         Template::create([
             'id_user' => 1,
-            'name' => 'OctopusFit - Nova senha de acesso',
+            'name' => 'Nova senha de acesso',
             'resume' => 'EMAIL-RESET-SENHA',
             'content' => Template::getHtml('EMAIL-RESET-SENHA'),
+            'status' => 'A',
+        ]);
+
+        Template::create([
+            'id_user' => 1,
+            'name' => 'Seu acesso ao App de treinamento online',
+            'resume' => 'EMAIL-CONVITE-ALUNO',
+            'content' => Template::getHtml('EMAIL-CONVITE-ALUNO'),
             'status' => 'A',
         ]);
     }
