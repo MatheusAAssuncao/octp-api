@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\TeacherStudent;
 use App\Models\User;
 use Exception;
 
@@ -60,6 +61,16 @@ class AuthController extends Controller
     
             $user = auth('api')->user();
             $_user = User::find($user['id']);
+
+            if ($_user->isStudent()) {
+                $_teacherStudent = TeacherStudent::where('id_student', $_user->id)
+                    ->where('status', 'I')
+                    ->first();
+                if ($_teacherStudent) {
+                    throw new Exception("Unauthorized");
+                }
+            }
+
             $_user->token = $token;
             $_user->save();
     

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\TeacherStudent;
 use App\Models\Template;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -23,6 +24,36 @@ class DatabaseSeeder extends Seeder
             'email' => "contato@octopusfit.com.br",
             'password' => Hash::make('123!123'),
             'type' => 'T',
+        ]);
+
+        User::create([
+            'name' => "Juquinha",
+            'email' => "matheus.tba@hotmail.com",
+            'password' => Hash::make('123!123'),
+            'type' => 'S',
+        ]);
+
+        User::create([
+            'name' => "Marquinhos",
+            'email' => "matheusttba@gmail.com",
+            'password' => Hash::make('123!123'),
+            'type' => 'S',
+        ]);
+
+        TeacherStudent::create([
+            'id_teacher' => 1,
+            'id_student' => 2,
+            'type_student' => 'O',
+            'type_contract' => 'M',
+            'status' => 'A',
+        ]);
+        
+        TeacherStudent::create([
+            'id_teacher' => 1,
+            'id_student' => 3,
+            'type_student' => 'O',
+            'type_contract' => 'M',
+            'status' => 'A',
         ]);
 
         Template::create([
