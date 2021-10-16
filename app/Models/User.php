@@ -38,16 +38,16 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 'temp_password', 'id_terms_use'
+        'password', 'temp_password'
     ];
 
     public function photo() {
         return $this->belongsTo(File::class, 'photo', 'id');
     }
 
-    public function termsUse() {
-        return $this->belongsTo(File::class, 'id_terms_use', 'id');
-    }
+    // public function termsUse() {
+    //     return $this->belongsTo(File::class, 'id_terms_use', 'id');
+    // }
 
     public function isTeacher() {
         return $this->type == "T";
@@ -63,6 +63,18 @@ class User extends Authenticatable implements JWTSubject
 
     public function setDtBornAttribute($value) {
         $this->attributes['dt_born'] = $value ? Carbon::createFromFormat('d/m/Y', $value)->format('Y-m-d') : null;
+    }
+
+    public function setTermsUseAttribute($value)
+    {
+        $encoding = mb_internal_encoding();
+        $this->attributes['terms_use'] = mb_strtoupper($value, $encoding);
+    }
+
+    public function setNameAttribute($value)
+    {
+        $encoding = mb_internal_encoding();
+        $this->attributes['name'] = mb_strtoupper($value, $encoding);
     }
 
     /**

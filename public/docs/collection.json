@@ -2,7 +2,7 @@
     "variables": [],
     "info": {
         "name": "OctopusFit API",
-        "_postman_id": "b5eb8f27-d498-49a6-8e2a-2c109cfe4275",
+        "_postman_id": "940e17cf-2fef-4d85-9d66-50a88a724761",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"
     },
@@ -15,8 +15,8 @@
                     "name": "Log-off",
                     "request": {
                         "url": {
-                            "protocol": "https",
-                            "host": "octopusfit.com.br\/",
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
                             "path": "api\/v1\/auth\/logout",
                             "query": []
                         },
@@ -47,8 +47,8 @@
                     "name": "Refresh",
                     "request": {
                         "url": {
-                            "protocol": "https",
-                            "host": "octopusfit.com.br\/",
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
                             "path": "api\/v1\/auth\/refresh",
                             "query": []
                         },
@@ -79,8 +79,8 @@
                     "name": "Login",
                     "request": {
                         "url": {
-                            "protocol": "https",
-                            "host": "octopusfit.com.br\/",
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
                             "path": "api\/auth\/login",
                             "query": []
                         },
@@ -101,9 +101,322 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"email\": \"contato@octopusfit.com.br\",\n    \"password\": \"123!abc\"\n}"
+                            "raw": "{\n    \"email\": \"contato@octopusfit.com.br\",\n    \"password\": \"123!123\"\n}"
                         },
                         "description": "Autentica\u00e7\u00e3o via e-mail e senha para obter um token JTW bearer.",
+                        "response": []
+                    }
+                }
+            ]
+        },
+        {
+            "name": "File",
+            "description": "\nGerenciamento de documentos",
+            "item": [
+                {
+                    "name": "Listagem de documentos",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
+                            "path": "api\/v1\/file",
+                            "query": []
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Lista os documentos cadastrados do usu\u00e1rio",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Cadastrar novo documento",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
+                            "path": "api\/v1\/file",
+                            "query": []
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"category\": \"quasi\"\n}"
+                        },
+                        "description": "Salva um arquivo em PDF atrav\u00e9s de upload. Exemplos: Anamnese, Contrato, Prescri\u00e7\u00e3o M\u00e9dica",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Remover documento",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
+                            "path": "api\/v1\/file\/:id",
+                            "query": [
+                                {
+                                    "key": "id",
+                                    "value": "debitis",
+                                    "description": "integer required O ID do documento a ser removido.",
+                                    "disabled": false
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Remove um arquivo do usu\u00e1rio da base de dados",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Listagem de categorias",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
+                            "path": "api\/v1\/file\/category",
+                            "query": []
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Lista as categorias poss\u00edveis para upload de documentos",
+                        "response": []
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Student",
+            "description": "\nGerenciamento de usu\u00e1rio do tipo aluno",
+            "item": [
+                {
+                    "name": "Upload de anamnese",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
+                            "path": "api\/v1\/student\/anamnesis",
+                            "query": []
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Permite que o aluno fa\u00e7a upload do arquivo PDF de anamnese preenchido.",
+                        "response": []
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Teacher",
+            "description": "\nGerenciamento de usu\u00e1rio do tipo professor",
+            "item": [
+                {
+                    "name": "Alterar dados do professor",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
+                            "path": "api\/v1\/teacher",
+                            "query": []
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Matheus\",\n    \"cpf\": \"12345678980\",\n    \"cnpj\": \"73942003000118\",\n    \"phone\": \"19991501844\",\n    \"media_facebook\": \"https:\\\/\\\/facebook.com\\\/professor\",\n    \"media_instagram\": \"@linchester\",\n    \"media_whatsapp\": \"19991501844\",\n    \"terms_use\": \"eligendi\",\n    \"genre\": \"dolores\",\n    \"dt_born\": \"01\\\/01\\\/1970\"\n}"
+                        },
+                        "description": "Altera as informa\u00e7\u00f5es do professor logado. O response em caso de sucesso 200 \u00e9 a pr\u00f3pria requisi\u00e7\u00e3o dentro de 'data'.",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Adiciona e convida um novo aluno",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
+                            "path": "api\/v1\/teacher\/new-student",
+                            "query": []
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Matheus\",\n    \"phone\": \"19991501844\",\n    \"type_student\": \"P\",\n    \"type_contract\": \"T\",\n    \"notes\": \"Aluno antigo da escola\"\n}"
+                        },
+                        "description": "Cadastra e envia um e-mail a um novo aluno vinculado ao professor logado. No e-mail cont\u00e9m a senha para o primeiro acesso.",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Atualiza dados do aluno",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
+                            "path": "api\/v1\/teacher\/edit-student",
+                            "query": []
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"id_student\": 0,\n    \"type_student\": \"P\",\n    \"type_contract\": \"T\",\n    \"status\": \"magnam\",\n    \"notes\": \"Aluno antigo da escola\",\n    \"id_required_anamnesis\": 20\n}"
+                        },
+                        "description": "Permite que o professor atualize dados do cadastro de um aluno.",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Listagem de alunos",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
+                            "path": "api\/v1\/teacher\/show-students",
+                            "query": []
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Lista os alunos vinculados ao professor",
                         "response": []
                     }
                 }
@@ -117,8 +430,8 @@
                     "name": "Alterar senha",
                     "request": {
                         "url": {
-                            "protocol": "https",
-                            "host": "octopusfit.com.br\/",
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
                             "path": "api\/v1\/user\/pass",
                             "query": []
                         },
@@ -149,8 +462,8 @@
                     "name": "Exibir dados do usu\u00e1rio",
                     "request": {
                         "url": {
-                            "protocol": "https",
-                            "host": "octopusfit.com.br\/",
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
                             "path": "api\/v1\/user",
                             "query": []
                         },
@@ -173,39 +486,7 @@
                             "mode": "raw",
                             "raw": "[]"
                         },
-                        "description": "Recupera as informa\u00e7\u00f5es do usu\u00e1rio logado.",
-                        "response": []
-                    }
-                },
-                {
-                    "name": "Alterar dados do usu\u00e1rio",
-                    "request": {
-                        "url": {
-                            "protocol": "https",
-                            "host": "octopusfit.com.br\/",
-                            "path": "api\/v1\/user",
-                            "query": []
-                        },
-                        "method": "PUT",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {token}"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"name\": \"Matheus\",\n    \"cpf\": \"12345678980\",\n    \"phone\": \"19991501844\",\n    \"media_facebook\": \"https:\\\/\\\/facebook.com\\\/usuario\",\n    \"media_instagram\": \"@linchester\",\n    \"media_whatsapp\": \"19991501844\",\n    \"terms_use\": \"sequi\"\n}"
-                        },
-                        "description": "Altera as informa\u00e7\u00f5es do usu\u00e1rio logado. O response em caso de sucesso 200 \u00e9 a pr\u00f3pria requisi\u00e7\u00e3o dentro de 'data'.",
+                        "description": "Recupera as informa\u00e7\u00f5es do usu\u00e1rio logado. Alguns itens podem variar dependendo do tipo de usu\u00e1rio logado: Professor (T) ou Aluno (S). Por exemplo, o campo terms_use s\u00f3 existe para os professores.",
                         "response": []
                     }
                 },
@@ -213,8 +494,8 @@
                     "name": "Salvar imagem de perfil",
                     "request": {
                         "url": {
-                            "protocol": "https",
-                            "host": "octopusfit.com.br\/",
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
                             "path": "api\/v1\/user\/photo",
                             "query": []
                         },
@@ -245,8 +526,8 @@
                     "name": "Remover imagem de perfil",
                     "request": {
                         "url": {
-                            "protocol": "https",
-                            "host": "octopusfit.com.br\/",
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
                             "path": "api\/v1\/user\/photo",
                             "query": []
                         },
@@ -274,75 +555,11 @@
                     }
                 },
                 {
-                    "name": "Salvar termo de uso",
-                    "request": {
-                        "url": {
-                            "protocol": "https",
-                            "host": "octopusfit.com.br\/",
-                            "path": "api\/v1\/user\/term",
-                            "query": []
-                        },
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {token}"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "[]"
-                        },
-                        "description": "Salva o PDF do termo de uso escolhido pelo usu\u00e1rio via upload.",
-                        "response": []
-                    }
-                },
-                {
-                    "name": "Remover termo de uso",
-                    "request": {
-                        "url": {
-                            "protocol": "https",
-                            "host": "octopusfit.com.br\/",
-                            "path": "api\/v1\/user\/term",
-                            "query": []
-                        },
-                        "method": "DELETE",
-                        "header": [
-                            {
-                                "key": "Content-Type",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Accept",
-                                "value": "application\/json"
-                            },
-                            {
-                                "key": "Authorization",
-                                "value": "Bearer {token}"
-                            }
-                        ],
-                        "body": {
-                            "mode": "raw",
-                            "raw": "[]"
-                        },
-                        "description": "Remove o arquivo PDF do termo de uso do usu\u00e1rio.",
-                        "response": []
-                    }
-                },
-                {
                     "name": "Cadastrar novo usu\u00e1rio",
                     "request": {
                         "url": {
-                            "protocol": "https",
-                            "host": "octopusfit.com.br\/",
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
                             "path": "api\/user",
                             "query": []
                         },
@@ -363,7 +580,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"name\": \"Matheus\",\n    \"email\": \"contato@octopusfit.com.br\",\n    \"password\": \"123!abc\",\n    \"cpf\": \"12345678980\",\n    \"cnpj\": \"illum\"\n}"
+                            "raw": "{\n    \"name\": \"Matheus\",\n    \"email\": \"contato@octopusfit.com.br\",\n    \"password\": \"123!abc\",\n    \"cpf\": \"12345678980\",\n    \"cnpj\": \"modi\"\n}"
                         },
                         "description": "Cadastra um novo usu\u00e1rio Personal Trainer. O response em caso de sucesso 200 \u00e9 a pr\u00f3pria requisi\u00e7\u00e3o dentro de 'data'.",
                         "response": []
@@ -373,8 +590,8 @@
                     "name": "Redefinir senha",
                     "request": {
                         "url": {
-                            "protocol": "https",
-                            "host": "octopusfit.com.br\/",
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
                             "path": "api\/user\/forgot-pass",
                             "query": []
                         },
@@ -411,8 +628,8 @@
                     "name": "Return an empty response simply to trigger the storage of the CSRF cookie in the browser.",
                     "request": {
                         "url": {
-                            "protocol": "https",
-                            "host": "octopusfit.com.br\/",
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
                             "path": "sanctum\/csrf-cookie",
                             "query": []
                         },

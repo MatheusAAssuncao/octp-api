@@ -5,7 +5,7 @@ namespace App\Models;
 class Teacher extends User
 {
     protected $table = 'user';
-    protected $hidden = ['id_terms_use'];
+    protected $hidden = ['password', 'temp_password'];
 
     public static function boot()
     {

@@ -6,6 +6,7 @@ use App\Mail\Email;
 use App\Models\File;
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\TeacherStudent;
 use App\Models\Template;
 use App\Models\User;
 use App\Models\Util;
@@ -98,11 +99,11 @@ class UserController extends Controller
      *
      * @authenticated
      * 
-     * @response {
+     * @response 200 {
      *   "result": true,
      *   "data": {
      *       "id": 1,
-     *       "name": "Matheus",
+     *       "name": "PERSONAL MATHEUS",
      *       "email": "contato@octopusfit.com.br",
      *       "cpf": "12345678980",
      *       "cnpj": null,
@@ -112,12 +113,57 @@ class UserController extends Controller
      *       "media_instagram": null,
      *       "media_whatsapp": null,
      *       "terms_use": "http:\/\/127.0.0.1:8000\/storage\/terms\/1\/byWMlIyaSD8KAJSve2tQdGtzwIPqH4LIgBpLe2ED.pdf",
-     *       "genre": "M",
      *       "status": "A",
+     *       "genre": "M",
+     *       "dt_born": "01/01/1970",
      *       "type": "T",
      *       "token": "eyaeXAi85dJhbGcdiJIUzI1NiJ9.HRwOjgXC8xMjcuMC4",
      *       "created_at": "2021-09-24T22:47:24.000000Z",
      *       "updated_at": "2021-09-28T01:24:23.000000Z"
+     *   }
+     * }
+     * 
+     * @response 200 {
+     *   "result": true,
+     *   "data": {
+     *       "id": 2,
+     *       "name": "JUQUINHA",
+     *       "email": "juquinha@gmail.com",
+     *       "cpf": null,
+     *       "phone": null,
+     *       "photo": null,
+     *       "media_facebook": null,
+     *       "media_instagram": null,
+     *       "media_whatsapp": null,
+     *       "status": "A",
+     *       "genre": "M",
+     *       "dt_born": "01/01/1970",
+     *       "type": "S",
+     *       "token": "eyaeXAi85dJhbGcdiJIUzI1NiJ9.HRwOjgXC8xMjcuMC4",
+     *       "created_at": "2021-10-15T21:42:22.000000Z",
+     *       "updated_at": "2021-10-15T22:41:20.000000Z",
+     *       "info": {
+     *         "type_student": "P",
+     *         "type_contract": "S",
+     *         "notes": null,
+     *         "status": "A",
+     *         "anamnesis": {
+     *           "id_required_anamnesis": 2,
+     *           "url_required_anamnesis": "http:\/\/127.0.0.1:8000\/storage\/files\/1\/b4zQVLi6wAhiROK6UMqqnPDxBSnJ6cJFCXmm8RqZ.pdf",
+     *           "description_required_anamnesis": "ANAMNESE NOVO ALUNO",
+     *           "id_uploaded_anamnesis": 3,
+     *           "url_uploaded_anamnesis": "http:\/\/127.0.0.1:8000\/storage\/files\/1\/b4zQVLi6wAhiROK6UMqqnPDxBSnJ6cJFCXmm8RqZ.pdf",
+     *           "description_uploaded_anamnesis": null
+     *         },
+     *         "teacher": {
+     *           "id": 1,
+     *           "name": "PERSONAL MATHEUS",
+     *           "media_facebook": "https:\/\/facebook.com\/usuario",
+     *           "media_instagram": null,
+     *           "media_whatsapp": null,
+     *           "genre": "M"
+     *         }
+     *       }
      *   }
      * }
      */
@@ -127,12 +173,11 @@ class UserController extends Controller
 
         if ($_user->isTeacher()) {
             $_user = Teacher::where('id', $_user->id)->first();
-            $_file = $_user->termsUse()->first();
-            if ($_file) {
-                $_user->terms_use = env('APP_URL').'storage/'.$_file->path;
-            }
         } else {
             $_user = Student::where('id', $_user->id)->first();
+            $_user->info->anamnesis = TeacherStudent::getAnamnesisInfo($_user->info->id_required_anamnesis, $_user->info->id_uploaded_anamnesis);
+            unset($_user->info->id_required_anamnesis);
+            unset($_user->info->id_uploaded_anamnesis);
         }
 
         $_file = $_user->photo()->first();
@@ -336,84 +381,5 @@ class UserController extends Controller
         }
 
         return response()->json(['result' => true, 'message' => "Foto removida com sucesso!"]);
-    }
-
-    /**
-     * 
-     * Salvar termo de uso
-     * 
-     * Salva o PDF do termo de uso escolhido pelo usuário via upload.
-     *
-     * @authenticated
-     * 
-     * @bodyParam  terms_use file required Deve ser um PDF com maximo de 2048 kb. No-example
-     * 
-     * @response {
-     *   "result": true,
-     *   "data": {
-     *     "terms_use": "http:\/\/127.0.0.1:8000\/storage\/terms\/1\/6XuZiqUlIVqsuPC9aXZSaV7d7cvmltxWg79izMTS.pdf"
-     *   }
-     * }
-     */
-    public function saveTerm(Request $request) {
-        $user = auth('api')->user();
-
-        $validation = Validator::make($request->all(), [
-            'terms_use' => 'required|mimes:pdf|max:2048',
-        ]);
-
-        if ($validation->fails()) {
-            return response()->json(['result' => false, 'message' => "Campos incorretos!", 'data' => $validation->errors()]);
-        }
-        
-        $_term = null;
-        if ($user->id_terms_use) {
-            $_term = $user->termsUse()->first();
-            Storage::disk('public')->delete($_term->path);
-        }
-
-        $term = $request->file('terms_use');
-        $_file = File::create([
-            'description' => 'Perfil',
-            'path' => $term->store('terms/'.$user->id, 'public'),
-            'type' => $term->getMimeType(),
-        ]);
-        $user->id_terms_use = $_file->id;
-        $user->save();
-
-        if ($_term) {
-            $_term->delete();
-        }
-
-        return response()->json(['result' => true, 'data' => ['terms_use' => env('APP_URL').'storage/'.$_file->path]]);
-    }
-
-    /**
-     * 
-     * Remover termo de uso
-     * 
-     * Remove o arquivo PDF do termo de uso do usuário.
-     *
-     * @authenticated
-     * 
-     * @response {
-     *   "result": true,
-     *   "message": "Termo removido com sucesso!"
-     * }
-     */
-    public function removeTerm(Request $request) {
-        $user = auth('api')->user();
-
-        if ($user->id_terms_use) {
-            $_term = $user->termsUse()->first();
-            Storage::disk('public')->delete($_term->path);
-            
-            $user->id_terms_use = null;
-            $user->save();
-
-            $_term->delete();
-        }
-
-        return response()->json(['result' => true, 'message' => "Termo removido com sucesso!"]);
     }
 }

@@ -46,7 +46,7 @@
           <!-- START_INFO -->
 <h1>Info</h1>
 <p>Welcome to the generated API reference.
-<a href="http://octopusfit.com.br/docs/collection.json">Get Postman Collection</a></p>
+<a href="http://127.0.0.1:8000/docs/collection.json">Get Postman Collection</a></p>
 <!-- END_INFO -->
 <h1>Auth</h1>
 <p>Gerenciamento de login</p>
@@ -58,12 +58,12 @@ Faz log-off do usuário.</p>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X POST \
-    "https://octopusfit.com.br/api/v1/auth/logout" \
+    "http://127.0.0.1:8000/api/v1/auth/logout" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "https://octopusfit.com.br/api/v1/auth/logout"
+    "http://127.0.0.1:8000/api/v1/auth/logout"
 );
 
 let headers = {
@@ -96,12 +96,12 @@ Atualiza o Token do usuário logado.</p>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X POST \
-    "https://octopusfit.com.br/api/v1/auth/refresh" \
+    "http://127.0.0.1:8000/api/v1/auth/refresh" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "https://octopusfit.com.br/api/v1/auth/refresh"
+    "http://127.0.0.1:8000/api/v1/auth/refresh"
 );
 
 let headers = {
@@ -134,14 +134,14 @@ fetch(url, {
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X POST \
-    "https://octopusfit.com.br/api/auth/login" \
+    "http://127.0.0.1:8000/api/auth/login" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}" \
-    -d '{"email":"contato@octopusfit.com.br","password":"123!abc"}'
+    -d '{"email":"contato@octopusfit.com.br","password":"123!123"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "https://octopusfit.com.br/api/auth/login"
+    "http://127.0.0.1:8000/api/auth/login"
 );
 
 let headers = {
@@ -152,7 +152,7 @@ let headers = {
 
 let body = {
     "email": "contato@octopusfit.com.br",
-    "password": "123!abc"
+    "password": "123!123"
 }
 
 fetch(url, {
@@ -198,6 +198,693 @@ fetch(url, {
 </tbody>
 </table>
 <!-- END_a925a8d22b3615f12fca79456d286859 -->
+<h1>File</h1>
+<p>Gerenciamento de documentos</p>
+<!-- START_5a0bd3075d15a3d997afc6ec1fd3b92b -->
+<h2>Listagem de documentos</h2>
+<p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Lista os documentos cadastrados do usuário</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X GET \
+    -G "http://127.0.0.1:8000/api/v1/file" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"</code></pre>
+<pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/v1/file"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "result": true,
+    "data": [
+        {
+            "id": 1,
+            "description": "PADRÃO",
+            "category": "TERMO DE USO",
+            "url": "http:\/\/127.0.0.1:8000\/storage\/files\/1\/6XuZiqUlIVqsuPC9aXZSaV7d7cvmltxWg79izMTS.pdf",
+            "created_at": "2021-10-15T22:02:34.000000Z"
+        },
+        {
+            "id": 2,
+            "description": "ANAMNESE NOVO ALUNO",
+            "category": "ANAMNESE",
+            "url": "http:\/\/127.0.0.1:8000\/storage\/files\/1\/6XuZiqUlIVqsuPC9aXZSaV7d7cvmltxWg79izMTS.pdf",
+            "created_at": "2021-10-15T22:02:34.000000Z"
+        }
+    ]
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/file</code></p>
+<!-- END_5a0bd3075d15a3d997afc6ec1fd3b92b -->
+<!-- START_4564250a8b30c72ffa7c1305b3936fcc -->
+<h2>Cadastrar novo documento</h2>
+<p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Salva um arquivo em PDF através de upload. Exemplos: Anamnese, Contrato, Prescrição Médica</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X POST \
+    "http://127.0.0.1:8000/api/v1/file" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}" \
+    -d '{"category":"quasi"}'
+</code></pre>
+<pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/v1/file"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+let body = {
+    "category": "quasi"
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">null</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/file</code></p>
+<h4>Body Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>category</code></td>
+<td>string</td>
+<td>required</td>
+<td>O nome da categoria do documento. Ver endpoint de exibição de categorias</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>required</td>
+<td>Uma descrição para o documento.</td>
+</tr>
+<tr>
+<td><code>file</code></td>
+<td>file</td>
+<td>required</td>
+<td>Deve ser um arquivo com maximo de 2048 kb.</td>
+</tr>
+</tbody>
+</table>
+<!-- END_4564250a8b30c72ffa7c1305b3936fcc -->
+<!-- START_97a06e6531b3f9cf4507c08e7f82a231 -->
+<h2>Remover documento</h2>
+<p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Remove um arquivo do usuário da base de dados</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X DELETE \
+    "http://127.0.0.1:8000/api/v1/file/1?id=debitis" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"</code></pre>
+<pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/v1/file/1"
+);
+
+let params = {
+    "id": "debitis",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+fetch(url, {
+    method: "DELETE",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "result": true,
+    "message": "Documento removido com sucesso!"
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>DELETE api/v1/file/{id}</code></p>
+<h4>Query Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>optional</td>
+<td>integer required O ID do documento a ser removido.</td>
+</tr>
+</tbody>
+</table>
+<!-- END_97a06e6531b3f9cf4507c08e7f82a231 -->
+<!-- START_deb22f3ab09814614b6a2a19e50603a0 -->
+<h2>Listagem de categorias</h2>
+<p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Lista as categorias possíveis para upload de documentos</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X GET \
+    -G "http://127.0.0.1:8000/api/v1/file/category" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"</code></pre>
+<pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/v1/file/category"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "result": true,
+    "data": [
+        "ANAMNESE",
+        "TERMO DE USO",
+        "PRESCRIÇÃO MÉDICA"
+    ]
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/file/category</code></p>
+<!-- END_deb22f3ab09814614b6a2a19e50603a0 -->
+<h1>Student</h1>
+<p>Gerenciamento de usuário do tipo aluno</p>
+<!-- START_030b955ad750805ab931f71b74142453 -->
+<h2>Upload de anamnese</h2>
+<p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Permite que o aluno faça upload do arquivo PDF de anamnese preenchido.</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X POST \
+    "http://127.0.0.1:8000/api/v1/student/anamnesis" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}" \
+</code></pre>
+<pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/v1/student/anamnesis"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "result": true,
+    "data": {
+        "url": "http:\/\/127.0.0.1:8000\/storage\/files\/1\/6XuZiqUlIVqsuPC9aXZSaV7d7cvmltxWg79izMTS.pdf"
+    },
+    "message": "Mensagem de erro se houver"
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/student/anamnesis</code></p>
+<h4>Body Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Descrição opcional.</td>
+</tr>
+<tr>
+<td><code>file</code></td>
+<td>file</td>
+<td>required</td>
+<td>Deve ser um arquivo com maximo de 2048 kb.</td>
+</tr>
+</tbody>
+</table>
+<!-- END_030b955ad750805ab931f71b74142453 -->
+<h1>Teacher</h1>
+<p>Gerenciamento de usuário do tipo professor</p>
+<!-- START_80c4d2e94ee0dfdb80a1bac74b5f642b -->
+<h2>Alterar dados do professor</h2>
+<p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Altera as informações do professor logado. O response em caso de sucesso 200 é a própria requisição dentro de 'data'.</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X PUT \
+    "http://127.0.0.1:8000/api/v1/teacher" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}" \
+    -d '{"name":"Matheus","cpf":"12345678980","cnpj":"73942003000118","phone":"19991501844","media_facebook":"https:\/\/facebook.com\/professor","media_instagram":"@linchester","media_whatsapp":"19991501844","terms_use":"eligendi","genre":"dolores","dt_born":"01\/01\/1970"}'
+</code></pre>
+<pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/v1/teacher"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+let body = {
+    "name": "Matheus",
+    "cpf": "12345678980",
+    "cnpj": "73942003000118",
+    "phone": "19991501844",
+    "media_facebook": "https:\/\/facebook.com\/professor",
+    "media_instagram": "@linchester",
+    "media_whatsapp": "19991501844",
+    "terms_use": "eligendi",
+    "genre": "dolores",
+    "dt_born": "01\/01\/1970"
+}
+
+fetch(url, {
+    method: "PUT",
+    headers: headers,
+    body: body
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "result": true,
+    "data": {},
+    "message": "Mensagem de erro se houver"
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PUT api/v1/teacher</code></p>
+<h4>Body Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>required</td>
+<td>Nome do professor.</td>
+</tr>
+<tr>
+<td><code>cpf</code></td>
+<td>string</td>
+<td>optional</td>
+<td>CPF sem acentuação.</td>
+</tr>
+<tr>
+<td><code>cnpj</code></td>
+<td>string</td>
+<td>optional</td>
+<td>CNPJ sem acentuação.</td>
+</tr>
+<tr>
+<td><code>phone</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Número de telefone sem acentuação.</td>
+</tr>
+<tr>
+<td><code>media_facebook</code></td>
+<td>string</td>
+<td>optional</td>
+<td>URL do Facebook do professor.</td>
+</tr>
+<tr>
+<td><code>media_instagram</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Conta no Instagram do professor.</td>
+</tr>
+<tr>
+<td><code>media_whatsapp</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Número do WhatsApp do professor.</td>
+</tr>
+<tr>
+<td><code>terms_use</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Termo de uso digitado (caso ele não opte pelo upload do PDF).</td>
+</tr>
+<tr>
+<td><code>genre</code></td>
+<td>string</td>
+<td>required</td>
+<td>Gênero (sexo) do professor, sendo M - Masculino, F - Feminino, O - Outro</td>
+</tr>
+<tr>
+<td><code>dt_born</code></td>
+<td>date</td>
+<td>optional</td>
+<td>Data de nascimento.</td>
+</tr>
+</tbody>
+</table>
+<!-- END_80c4d2e94ee0dfdb80a1bac74b5f642b -->
+<!-- START_2f276f728990f872d02e8a1fdfe08d01 -->
+<h2>Adiciona e convida um novo aluno</h2>
+<p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Cadastra e envia um e-mail a um novo aluno vinculado ao professor logado. No e-mail contém a senha para o primeiro acesso.</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X POST \
+    "http://127.0.0.1:8000/api/v1/teacher/new-student" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}" \
+    -d '{"name":"Matheus","phone":"19991501844","type_student":"P","type_contract":"T","notes":"Aluno antigo da escola"}'
+</code></pre>
+<pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/v1/teacher/new-student"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+let body = {
+    "name": "Matheus",
+    "phone": "19991501844",
+    "type_student": "P",
+    "type_contract": "T",
+    "notes": "Aluno antigo da escola"
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "result": true,
+    "data": {},
+    "message": "Mensagem de erro se houver"
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST api/v1/teacher/new-student</code></p>
+<h4>Body Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>required</td>
+<td>Nome do professor.</td>
+</tr>
+<tr>
+<td><code>phone</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Número de telefone sem acentuação.</td>
+</tr>
+<tr>
+<td><code>type_student</code></td>
+<td>string</td>
+<td>required</td>
+<td>Tipo de aluno: P - presencial, O - online.</td>
+</tr>
+<tr>
+<td><code>type_contract</code></td>
+<td>string</td>
+<td>required</td>
+<td>Tipo de contrato: M - mensal, T - trimestral, S - semestral.</td>
+</tr>
+<tr>
+<td><code>photo</code></td>
+<td>file</td>
+<td>optional</td>
+<td>Imagem em png ou jpg com maximo de 2048 kb.</td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Texto com máximo de 255 caracteres.</td>
+</tr>
+</tbody>
+</table>
+<!-- END_2f276f728990f872d02e8a1fdfe08d01 -->
+<!-- START_e34f3d487e621ab164d1333e46c1636b -->
+<h2>Atualiza dados do aluno</h2>
+<p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Permite que o professor atualize dados do cadastro de um aluno.</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X PUT \
+    "http://127.0.0.1:8000/api/v1/teacher/edit-student" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}" \
+    -d '{"id_student":0,"type_student":"P","type_contract":"T","status":"magnam","notes":"Aluno antigo da escola","id_required_anamnesis":20}'
+</code></pre>
+<pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/v1/teacher/edit-student"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+let body = {
+    "id_student": 0,
+    "type_student": "P",
+    "type_contract": "T",
+    "status": "magnam",
+    "notes": "Aluno antigo da escola",
+    "id_required_anamnesis": 20
+}
+
+fetch(url, {
+    method: "PUT",
+    headers: headers,
+    body: body
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "result": true,
+    "data": {},
+    "message": "Mensagem de erro se houver"
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>PUT api/v1/teacher/edit-student</code></p>
+<h4>Body Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id_student</code></td>
+<td>integer</td>
+<td>required</td>
+<td>ID do aluno.</td>
+</tr>
+<tr>
+<td><code>type_student</code></td>
+<td>string</td>
+<td>required</td>
+<td>Tipo de aluno: P - presencial, O - online.</td>
+</tr>
+<tr>
+<td><code>type_contract</code></td>
+<td>string</td>
+<td>required</td>
+<td>Tipo de contrato: M - mensal, T - trimestral, S - semestral.</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>string</td>
+<td>required</td>
+<td>Status do aluno. Aqui é possível bloquear o acesso no login se definido I (inativo). Exampe: A</td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Texto com máximo de 255 caracteres.</td>
+</tr>
+<tr>
+<td><code>id_required_anamnesis</code></td>
+<td>integer</td>
+<td>optional</td>
+<td>ID do documento de anamnese caso o professor queira solicitar preenchimento de anamnese. Ver módulo 'File'</td>
+</tr>
+</tbody>
+</table>
+<!-- END_e34f3d487e621ab164d1333e46c1636b -->
+<!-- START_e9b54d1b794da3a0b76d1837c45b401c -->
+<h2>Listagem de alunos</h2>
+<p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Lista os alunos vinculados ao professor</p>
+<blockquote>
+<p>Example request:</p>
+</blockquote>
+<pre><code class="language-bash">curl -X GET \
+    -G "http://127.0.0.1:8000/api/v1/teacher/show-students" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"</code></pre>
+<pre><code class="language-javascript">const url = new URL(
+    "http://127.0.0.1:8000/api/v1/teacher/show-students"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<blockquote>
+<p>Example response (200):</p>
+</blockquote>
+<pre><code class="language-json">{
+    "result": true,
+    "data": [
+        {
+            "id_student": 2,
+            "name": "JUQUINHA",
+            "status": "A",
+            "type_student": "P",
+            "type_contract": "S",
+            "notes": null,
+            "created_at": "2021-10-15 18:42:22",
+            "updated_at": "2021-10-15 19:16:05",
+            "anamnesis": {
+                "id_required_anamnesis": 2,
+                "url_required_anamnesis": "http:\/\/127.0.0.1:8000\/storage\/files\/1\/b4zQVLi6wAhiROK6UMqqnPDxBSnJ6cJFCXmm8RqZ.pdf",
+                "description_required_anamnesis": "ANAMNESE NOVO ALUNO",
+                "id_uploaded_anamnesis": null,
+                "url_uploaded_anamnesis": null,
+                "description_uploaded_anamnesis": null
+            }
+        }
+    ]
+}</code></pre>
+<h3>HTTP Request</h3>
+<p><code>GET api/v1/teacher/show-students</code></p>
+<!-- END_e9b54d1b794da3a0b76d1837c45b401c -->
 <h1>User</h1>
 <p>Gerenciamento de usuário</p>
 <!-- START_2bd7e3f2440dabd5a1a7ec210e7ac7c5 -->
@@ -208,14 +895,14 @@ Altera a senha de um usuário.</p>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X PUT \
-    "https://octopusfit.com.br/api/v1/user/pass" \
+    "http://127.0.0.1:8000/api/v1/user/pass" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}" \
     -d '{"password":"123!abc"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "https://octopusfit.com.br/api/v1/user/pass"
+    "http://127.0.0.1:8000/api/v1/user/pass"
 );
 
 let headers = {
@@ -269,17 +956,17 @@ fetch(url, {
 <!-- START_d7f5c16f3f30bc08c462dbfe4b62c6b9 -->
 <h2>Exibir dados do usuário</h2>
 <p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-Recupera as informações do usuário logado.</p>
+Recupera as informações do usuário logado. Alguns itens podem variar dependendo do tipo de usuário logado: Professor (T) ou Aluno (S). Por exemplo, o campo terms_use só existe para os professores.</p>
 <blockquote>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "https://octopusfit.com.br/api/v1/user" \
+    -G "http://127.0.0.1:8000/api/v1/user" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "https://octopusfit.com.br/api/v1/user"
+    "http://127.0.0.1:8000/api/v1/user"
 );
 
 let headers = {
@@ -301,9 +988,8 @@ fetch(url, {
     "result": true,
     "data": {
         "id": 1,
-        "name": "Matheus",
+        "name": "PERSONAL MATHEUS",
         "email": "contato@octopusfit.com.br",
-        "temp_password": null,
         "cpf": "12345678980",
         "cnpj": null,
         "phone": null,
@@ -312,123 +998,64 @@ fetch(url, {
         "media_instagram": null,
         "media_whatsapp": null,
         "terms_use": "http:\/\/127.0.0.1:8000\/storage\/terms\/1\/byWMlIyaSD8KAJSve2tQdGtzwIPqH4LIgBpLe2ED.pdf",
-        "id_terms_use": 1,
         "status": "A",
+        "genre": "M",
+        "dt_born": "01\/01\/1970",
+        "type": "T",
         "token": "eyaeXAi85dJhbGcdiJIUzI1NiJ9.HRwOjgXC8xMjcuMC4",
         "created_at": "2021-09-24T22:47:24.000000Z",
         "updated_at": "2021-09-28T01:24:23.000000Z"
     }
 }</code></pre>
-<h3>HTTP Request</h3>
-<p><code>GET api/v1/user</code></p>
-<!-- END_d7f5c16f3f30bc08c462dbfe4b62c6b9 -->
-<!-- START_fbb042dc4d73e868a98cb91becbbd0af -->
-<h2>Alterar dados do usuário</h2>
-<p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-Altera as informações do usuário logado. O response em caso de sucesso 200 é a própria requisição dentro de 'data'.</p>
-<blockquote>
-<p>Example request:</p>
-</blockquote>
-<pre><code class="language-bash">curl -X PUT \
-    "https://octopusfit.com.br/api/v1/user" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer {token}" \
-    -d '{"name":"Matheus","cpf":"12345678980","phone":"19991501844","media_facebook":"https:\/\/facebook.com\/usuario","media_instagram":"@linchester","media_whatsapp":"19991501844","terms_use":"sequi"}'
-</code></pre>
-<pre><code class="language-javascript">const url = new URL(
-    "https://octopusfit.com.br/api/v1/user"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer {token}",
-};
-
-let body = {
-    "name": "Matheus",
-    "cpf": "12345678980",
-    "phone": "19991501844",
-    "media_facebook": "https:\/\/facebook.com\/usuario",
-    "media_instagram": "@linchester",
-    "media_whatsapp": "19991501844",
-    "terms_use": "sequi"
-}
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-    body: body
-})
-    .then(response =&gt; response.json())
-    .then(json =&gt; console.log(json));</code></pre>
 <blockquote>
 <p>Example response (200):</p>
 </blockquote>
 <pre><code class="language-json">{
     "result": true,
-    "data": {},
-    "message": "Mensagem de erro se houver"
+    "data": {
+        "id": 2,
+        "name": "JUQUINHA",
+        "email": "juquinha@gmail.com",
+        "cpf": null,
+        "phone": null,
+        "photo": null,
+        "media_facebook": null,
+        "media_instagram": null,
+        "media_whatsapp": null,
+        "status": "A",
+        "genre": "M",
+        "dt_born": "01\/01\/1970",
+        "type": "S",
+        "token": "eyaeXAi85dJhbGcdiJIUzI1NiJ9.HRwOjgXC8xMjcuMC4",
+        "created_at": "2021-10-15T21:42:22.000000Z",
+        "updated_at": "2021-10-15T22:41:20.000000Z",
+        "info": {
+            "type_student": "P",
+            "type_contract": "S",
+            "notes": null,
+            "status": "A",
+            "anamnesis": {
+                "id_required_anamnesis": 2,
+                "url_required_anamnesis": "http:\/\/127.0.0.1:8000\/storage\/files\/1\/b4zQVLi6wAhiROK6UMqqnPDxBSnJ6cJFCXmm8RqZ.pdf",
+                "description_required_anamnesis": "ANAMNESE NOVO ALUNO",
+                "id_uploaded_anamnesis": 3,
+                "url_uploaded_anamnesis": "http:\/\/127.0.0.1:8000\/storage\/files\/1\/b4zQVLi6wAhiROK6UMqqnPDxBSnJ6cJFCXmm8RqZ.pdf",
+                "description_uploaded_anamnesis": null
+            },
+            "teacher": {
+                "id": 1,
+                "name": "PERSONAL MATHEUS",
+                "media_facebook": "https:\/\/facebook.com\/usuario",
+                "media_instagram": null,
+                "media_whatsapp": null,
+                "genre": "M"
+            }
+        }
+    }
 }</code></pre>
 <h3>HTTP Request</h3>
-<p><code>PUT api/v1/user</code></p>
-<h4>Body Parameters</h4>
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Status</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>name</code></td>
-<td>string</td>
-<td>required</td>
-<td>Nome do usuário.</td>
-</tr>
-<tr>
-<td><code>cpf</code></td>
-<td>string</td>
-<td>optional</td>
-<td>CPF sem acentuação.</td>
-</tr>
-<tr>
-<td><code>phone</code></td>
-<td>string</td>
-<td>optional</td>
-<td>Número de telefone sem acentuação.</td>
-</tr>
-<tr>
-<td><code>media_facebook</code></td>
-<td>string</td>
-<td>optional</td>
-<td>URL do Facebook do usuário.</td>
-</tr>
-<tr>
-<td><code>media_instagram</code></td>
-<td>string</td>
-<td>optional</td>
-<td>Conta no Instagram do usuário.</td>
-</tr>
-<tr>
-<td><code>media_whatsapp</code></td>
-<td>string</td>
-<td>optional</td>
-<td>Número do WhatsApp do usuário.</td>
-</tr>
-<tr>
-<td><code>terms_use</code></td>
-<td>string</td>
-<td>optional</td>
-<td>Termo de uso digitado (caso ele não opte pelo upload do PDF).</td>
-</tr>
-</tbody>
-</table>
-<!-- END_fbb042dc4d73e868a98cb91becbbd0af -->
+<p><code>GET api/v1/user</code></p>
+<!-- END_d7f5c16f3f30bc08c462dbfe4b62c6b9 -->
 <!-- START_827a17bffc1a06b780d13a89cc1ccd51 -->
 <h2>Salvar imagem de perfil</h2>
 <p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
@@ -437,13 +1064,13 @@ Salva a imagem de perfil do usuário.</p>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X POST \
-    "https://octopusfit.com.br/api/v1/user/photo" \
+    "http://127.0.0.1:8000/api/v1/user/photo" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}" \
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "https://octopusfit.com.br/api/v1/user/photo"
+    "http://127.0.0.1:8000/api/v1/user/photo"
 );
 
 let headers = {
@@ -498,12 +1125,12 @@ Remove a imagem de perfil do usuário.</p>
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X DELETE \
-    "https://octopusfit.com.br/api/v1/user/photo" \
+    "http://127.0.0.1:8000/api/v1/user/photo" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "https://octopusfit.com.br/api/v1/user/photo"
+    "http://127.0.0.1:8000/api/v1/user/photo"
 );
 
 let headers = {
@@ -528,105 +1155,6 @@ fetch(url, {
 <h3>HTTP Request</h3>
 <p><code>DELETE api/v1/user/photo</code></p>
 <!-- END_1b54cb09758834354bcb7b0128c1241e -->
-<!-- START_8344b7428c9bacd73137379dbca72169 -->
-<h2>Salvar termo de uso</h2>
-<p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-Salva o PDF do termo de uso escolhido pelo usuário via upload.</p>
-<blockquote>
-<p>Example request:</p>
-</blockquote>
-<pre><code class="language-bash">curl -X POST \
-    "https://octopusfit.com.br/api/v1/user/term" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer {token}" \
-</code></pre>
-<pre><code class="language-javascript">const url = new URL(
-    "https://octopusfit.com.br/api/v1/user/term"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer {token}",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-    body: body
-})
-    .then(response =&gt; response.json())
-    .then(json =&gt; console.log(json));</code></pre>
-<blockquote>
-<p>Example response (200):</p>
-</blockquote>
-<pre><code class="language-json">{
-    "result": true,
-    "data": {
-        "terms_use": "http:\/\/127.0.0.1:8000\/storage\/terms\/1\/6XuZiqUlIVqsuPC9aXZSaV7d7cvmltxWg79izMTS.pdf"
-    }
-}</code></pre>
-<h3>HTTP Request</h3>
-<p><code>POST api/v1/user/term</code></p>
-<h4>Body Parameters</h4>
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Status</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>terms_use</code></td>
-<td>file</td>
-<td>required</td>
-<td>Deve ser um PDF com maximo de 2048 kb.</td>
-</tr>
-</tbody>
-</table>
-<!-- END_8344b7428c9bacd73137379dbca72169 -->
-<!-- START_8ffe7bffa186ae200e3a45eb25762625 -->
-<h2>Remover termo de uso</h2>
-<p><br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-Remove o arquivo PDF do termo de uso do usuário.</p>
-<blockquote>
-<p>Example request:</p>
-</blockquote>
-<pre><code class="language-bash">curl -X DELETE \
-    "https://octopusfit.com.br/api/v1/user/term" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer {token}"</code></pre>
-<pre><code class="language-javascript">const url = new URL(
-    "https://octopusfit.com.br/api/v1/user/term"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer {token}",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response =&gt; response.json())
-    .then(json =&gt; console.log(json));</code></pre>
-<blockquote>
-<p>Example response (200):</p>
-</blockquote>
-<pre><code class="language-json">{
-    "result": true,
-    "message": "Termo removido com sucesso!"
-}</code></pre>
-<h3>HTTP Request</h3>
-<p><code>DELETE api/v1/user/term</code></p>
-<!-- END_8ffe7bffa186ae200e3a45eb25762625 -->
 <!-- START_f0654d3f2fc63c11f5723f233cc53c83 -->
 <h2>Cadastrar novo usuário</h2>
 <p>Cadastra um novo usuário Personal Trainer. O response em caso de sucesso 200 é a própria requisição dentro de 'data'.</p>
@@ -634,14 +1162,14 @@ fetch(url, {
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X POST \
-    "https://octopusfit.com.br/api/user" \
+    "http://127.0.0.1:8000/api/user" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}" \
-    -d '{"name":"Matheus","email":"contato@octopusfit.com.br","password":"123!abc","cpf":"12345678980","cnpj":"illum"}'
+    -d '{"name":"Matheus","email":"contato@octopusfit.com.br","password":"123!abc","cpf":"12345678980","cnpj":"modi"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "https://octopusfit.com.br/api/user"
+    "http://127.0.0.1:8000/api/user"
 );
 
 let headers = {
@@ -655,7 +1183,7 @@ let body = {
     "email": "contato@octopusfit.com.br",
     "password": "123!abc",
     "cpf": "12345678980",
-    "cnpj": "illum"
+    "cnpj": "modi"
 }
 
 fetch(url, {
@@ -727,14 +1255,14 @@ Depois do primeiro login com a nova senha, a chave 'reset_password' ficará como
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X POST \
-    "https://octopusfit.com.br/api/user/forgot-pass" \
+    "http://127.0.0.1:8000/api/user/forgot-pass" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}" \
     -d '{"email":"contato@octopusfit.com.br"}'
 </code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "https://octopusfit.com.br/api/user/forgot-pass"
+    "http://127.0.0.1:8000/api/user/forgot-pass"
 );
 
 let headers = {
@@ -790,12 +1318,12 @@ fetch(url, {
 <p>Example request:</p>
 </blockquote>
 <pre><code class="language-bash">curl -X GET \
-    -G "https://octopusfit.com.br/sanctum/csrf-cookie" \
+    -G "http://127.0.0.1:8000/sanctum/csrf-cookie" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}"</code></pre>
 <pre><code class="language-javascript">const url = new URL(
-    "https://octopusfit.com.br/sanctum/csrf-cookie"
+    "http://127.0.0.1:8000/sanctum/csrf-cookie"
 );
 
 let headers = {

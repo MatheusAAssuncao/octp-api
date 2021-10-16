@@ -20,7 +20,8 @@ class CreateTeacherStudentsTable extends Migration
             $table->char('type_student', 1)->comment('P - Presencial, O - Online');
             $table->char('type_contract', 1)->comment('M - Mensal, T - Trimestral, S - Semestral');
             $table->tinyText('notes')->nullable();
-            $table->tinyInteger('require_anamnesis')->default(0);
+            $table->foreignId('id_required_anamnesis')->nullable()->constrained('files');
+            $table->foreignId('id_uploaded_anamnesis')->nullable()->constrained('files');
             $table->char('status', 1)->default('A')->comment('A - Active, I - Inative');
             $table->timestamps();
         });

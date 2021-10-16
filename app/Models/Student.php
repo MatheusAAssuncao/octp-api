@@ -5,7 +5,7 @@ namespace App\Models;
 class Student extends User
 {
     protected $table = 'user';
-    protected $hidden = ['cnpj', 'terms_use', 'id_terms_use'];
+    protected $hidden = ['cnpj', 'terms_use', 'password', 'temp_password'];
     protected $with = array('info');
 
     public static function boot()
@@ -16,11 +16,6 @@ class Student extends User
             $query->where('type', 'S');
         });
     }
-
-    // public function teacher()
-    // {
-    //     return $this->BelongsToMany(Teacher::class, 'teacher_students', 'id_student', 'id_teacher');
-    // }
 
     public function info()
     {

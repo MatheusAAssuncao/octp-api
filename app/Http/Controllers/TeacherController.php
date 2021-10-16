@@ -10,6 +10,7 @@ use App\Models\Template;
 use App\Models\Util;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -20,6 +21,76 @@ use Illuminate\Support\Facades\Validator;
  */
 class TeacherController extends Controller
 {
+
+    /**
+     * 
+     * Listagem de alunos
+     * 
+     * Lista os alunos vinculados ao professor
+     *
+     * @authenticated
+     * 
+     * @response {
+     *   "result": true,
+     *   "data": [{
+     *     "id_student": 2,
+     *     "name": "JUQUINHA",
+     *     "status": "A",
+     *     "type_student": "P",
+     *     "type_contract": "S",
+     *     "notes": null,
+     *     "created_at": "2021-10-15 18:42:22",
+     *     "updated_at": "2021-10-15 19:16:05",
+     *     "anamnesis": {
+     *       "id_required_anamnesis": 2,
+     *       "url_required_anamnesis": "http:\/\/127.0.0.1:8000\/storage\/files\/1\/b4zQVLi6wAhiROK6UMqqnPDxBSnJ6cJFCXmm8RqZ.pdf",
+     *       "description_required_anamnesis": "ANAMNESE NOVO ALUNO",
+     *       "id_uploaded_anamnesis": null,
+     *       "url_uploaded_anamnesis": null,
+     *       "description_uploaded_anamnesis": null
+     *     }
+     *   }]
+     * }
+     */
+    public function index()
+    {
+        $_teacher = auth('api')->user();
+        if (!$_teacher->isTeacher()) {
+            abort(404);
+        }
+
+        $columns = array(
+            'teacher_students.id_student',
+            'user.name',
+            'teacher_students.status',
+            'teacher_students.type_student',
+            'teacher_students.type_contract',
+            'teacher_students.notes',
+            'teacher_students.id_required_anamnesis',
+            'teacher_students.id_uploaded_anamnesis',
+            'teacher_students.created_at',
+            'teacher_students.updated_at',
+        );
+
+        $students = DB::table('teacher_students')
+            ->select($columns)
+            ->join('user', 'user.id', '=', 'teacher_students.id_student')
+            ->where('teacher_students.id_teacher', $_teacher->id)
+            ->orderBy('user.name')
+            ->get();
+
+        if (!$students) {
+            return response()->json(['result' => true, 'data' => []]);
+        }
+
+        foreach ($students as &$student) {
+            $student->anamnesis = TeacherStudent::getAnamnesisInfo($student->id_required_anamnesis, $student->id_uploaded_anamnesis);
+            unset($student->id_required_anamnesis);
+            unset($student->id_uploaded_anamnesis);
+        }
+
+        return response()->json(['result' => true, 'data' => $students]);
+    }
 
     /**
      * 
@@ -80,6 +151,7 @@ class TeacherController extends Controller
             $_teacher->phone = $request->input('phone');
             $_teacher->terms_use = $request->input('terms_use');
             $_teacher->genre = $request->input('genre');
+            $_teacher->dt_born = $request->input('dt_born');
             $_teacher->save();
     
             return response()->json(['result' => true, 'data' => $request->all()]);
@@ -157,13 +229,12 @@ class TeacherController extends Controller
             $_student->save();
         }
 
-        $_teacherStudent = TeacherStudent::create([
+        TeacherStudent::create([
             'id_teacher' => $_teacher->id,
             'id_student' => $_student->id,
             'type_student' => $request->input('type_student'),
             'type_contract' => $request->input('type_contract'),
             'notes' => $request->input('notes'),
-            'require_anamnesis' => 0,
             'status' => "A",
         ]);
 
@@ -185,6 +256,74 @@ class TeacherController extends Controller
                 // 'ex' => $ex->getMessage()
             ]);
         }
+
+        return response()->json(['result' => true, 'data' => $request->all()]);
+    }
+
+    /**
+     * 
+     * Atualiza dados do aluno
+     * 
+     * Permite que o professor atualize dados do cadastro de um aluno.
+     *
+     * @authenticated
+     * 
+     * @bodyParam  id_student integer required ID do aluno. Example: Matheus
+     * @bodyParam  type_student string required Tipo de aluno: P - presencial, O - online. Example: P
+     * @bodyParam  type_contract string required Tipo de contrato: M - mensal, T - trimestral, S - semestral. Example: T
+     * @bodyParam  status string required Status do aluno. Aqui é possível bloquear o acesso no login se definido I (inativo). Exampe: A
+     * @bodyParam  notes string Texto com máximo de 255 caracteres. Example: Aluno antigo da escola
+     * @bodyParam  id_required_anamnesis integer ID do documento de anamnese caso o professor queira solicitar preenchimento de anamnese. Ver módulo 'File'
+     * 
+     * @response {
+     *   "result": true,
+     *   "data": {
+     *   },
+     *   "message": "Mensagem de erro se houver"
+     * }
+     */
+    public function updateStudent(Request $request)
+    {
+        
+        $_teacher = auth('api')->user();
+        if (!$_teacher->isTeacher()) {
+            abort(404);
+        }
+
+        $validation = Validator::make($request->all(), [
+            'id_student' => 'required|exists:App\Models\User,id',
+            'type_student' => 'required|size:1|in:P,O', // presencial, online
+            'type_contract' => 'required|size:1|in:M,T,S', // mensal, trimestral, semestral
+            'status' => 'required|size:1|in:A,I',
+            'notes' => 'nullable|max:255',
+            'id_required_anamnesis' => 'nullable|exists:App\Models\File,id'
+        ]);
+
+        if ($validation->fails()) {
+            return response()->json(['result' => false, 'message' => "Campos incorretos!", 'data' => $validation->errors()]);
+        }
+        
+        $_teacherStudent = TeacherStudent::where('id_teacher', $_teacher->id)
+            ->where('id_student', $request->input('id_student'))
+            ->first();
+
+        if (!$_teacherStudent) {
+            return response()->json(['result' => false, 'message' => 'Aluno não encontrado para este professor!']);
+        }
+
+        if ($request->input('id_required_anamnesis')) {
+            if ($_teacherStudent->id_uploaded_anamnesis && 
+                $_teacherStudent->id_required_anamnesis != $request->input('id_required_anamnesis')) {
+                return response()->json(['result' => false, 'message' => "Outra anamnese já foi respondida pelo aluno!"]);
+            }
+        }
+
+        $_teacherStudent->type_contract = $request->input('type_contract');
+        $_teacherStudent->type_student = $request->input('type_student');
+        $_teacherStudent->status = $request->input('status');
+        $_teacherStudent->notes = $request->input('notes');
+        $_teacherStudent->id_required_anamnesis = $request->input('id_required_anamnesis');
+        $_teacherStudent->save();
 
         return response()->json(['result' => true, 'data' => $request->all()]);
     }

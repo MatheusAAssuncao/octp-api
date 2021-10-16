@@ -22,12 +22,11 @@ class CreateUserTable extends Migration
             $table->string('cpf', 11)->nullable();
             $table->string('cnpj', 14)->nullable();
             $table->string('phone', 13)->nullable();
-            $table->foreignId('photo')->nullable()->constrained('files');
+            $table->integer('photo')->nullable();
             $table->string('media_facebook', 50)->nullable();
             $table->string('media_instagram', 20)->nullable();
             $table->string('media_whatsapp', 20)->nullable();
             $table->string('terms_use', 255)->nullable();
-            $table->foreignId('id_terms_use')->nullable()->constrained('files');
             $table->char('status', 1)->default('A')->comment('A - Active, I - Inative');
             $table->char('genre', 1)->default('O')->comment('M - Masculino, F - Feminino, O - Outro');
             $table->date('dt_born')->nullable();
