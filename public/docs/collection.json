@@ -2,7 +2,7 @@
     "variables": [],
     "info": {
         "name": "OctopusFit API",
-        "_postman_id": "940e17cf-2fef-4d85-9d66-50a88a724761",
+        "_postman_id": "4e82bbd2-4ac6-4861-b6f9-8c45a9b5ae43",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.0.0\/collection.json"
     },
@@ -110,6 +110,255 @@
             ]
         },
         {
+            "name": "Card",
+            "description": "\nGerenciamento de fichas",
+            "item": [
+                {
+                    "name": "Listagem de fichas",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
+                            "path": "api\/v1\/card\/:id",
+                            "query": [
+                                {
+                                    "key": "id",
+                                    "value": "molestiae",
+                                    "description": "O ID do aluno.",
+                                    "disabled": false
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Lista as fichas cadastradas para o aluno",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Adiciona uma nova ficha",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
+                            "path": "api\/v1\/card",
+                            "query": []
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Ficha de adapta\\u00e7\\u00e3o\",\n    \"description\": \"Treino tempor\\u00e1rio de adapta\\u00e7\\u00e3o dos grupos musculares\",\n    \"id_student\": 15,\n    \"dt_end\": \"01\\\/01\\\/2022\",\n    \"times\": 12\n}"
+                        },
+                        "description": "Cadastra uma ficha modelo caso o par\u00e2metro id_student esteja nulo, do contr\u00e1rio atribui ao aluno.",
+                        "response": []
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Equipment",
+            "description": "\nEquipamentos cadastrados",
+            "item": [
+                {
+                    "name": "Listagem de equipamentos",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
+                            "path": "api\/v1\/equipment",
+                            "query": []
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Lista os equipamentos p\u00fablicos cadastrados em ordem albaf\u00e9tica",
+                        "response": []
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Exercise",
+            "description": "\nGerenciamento de exerc\u00edcios",
+            "item": [
+                {
+                    "name": "Listagem de exerc\u00edcios",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
+                            "path": "api\/v1\/exercise",
+                            "query": []
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Lista os exerc\u00edcios p\u00fablicos e privados (cadastrados pelo usu\u00e1rio)",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Listagem de tipos de exerc\u00edcios",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
+                            "path": "api\/v1\/exercise\/group-type",
+                            "query": []
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Lista as grupos de exerc\u00edcios poss\u00edveis",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Listagem de tipos de repeti\u00e7\u00f5es",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
+                            "path": "api\/v1\/exercise\/repetition-type",
+                            "query": []
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Lista os tipos de repeti\u00e7\u00f5es para os exerc\u00edcios",
+                        "response": []
+                    }
+                },
+                {
+                    "name": "Listagem de tipos de pesos",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
+                            "path": "api\/v1\/exercise\/charge-type",
+                            "query": []
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Lista os tipos de pesos a serem usados nos exerc\u00edcios",
+                        "response": []
+                    }
+                }
+            ]
+        },
+        {
             "name": "File",
             "description": "\nGerenciamento de documentos",
             "item": [
@@ -171,7 +420,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"category\": \"quasi\"\n}"
+                            "raw": "{\n    \"category\": \"exercitationem\"\n}"
                         },
                         "description": "Salva um arquivo em PDF atrav\u00e9s de upload. Exemplos: Anamnese, Contrato, Prescri\u00e7\u00e3o M\u00e9dica",
                         "response": []
@@ -187,8 +436,8 @@
                             "query": [
                                 {
                                     "key": "id",
-                                    "value": "debitis",
-                                    "description": "integer required O ID do documento a ser removido.",
+                                    "value": "est",
+                                    "description": "O ID do documento a ser removido.",
                                     "disabled": false
                                 }
                             ]
@@ -245,6 +494,44 @@
                             "raw": "[]"
                         },
                         "description": "Lista as categorias poss\u00edveis para upload de documentos",
+                        "response": []
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Muscle-Groups",
+            "description": "\nGrupos musculares cadastrados",
+            "item": [
+                {
+                    "name": "Listagem de grupos musculares",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
+                            "path": "api\/v1\/muscle-group",
+                            "query": []
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[]"
+                        },
+                        "description": "Lista os grupos musculares p\u00fablicos cadastrados em ordem albaf\u00e9tica",
                         "response": []
                     }
                 }
@@ -318,7 +605,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"name\": \"Matheus\",\n    \"cpf\": \"12345678980\",\n    \"cnpj\": \"73942003000118\",\n    \"phone\": \"19991501844\",\n    \"media_facebook\": \"https:\\\/\\\/facebook.com\\\/professor\",\n    \"media_instagram\": \"@linchester\",\n    \"media_whatsapp\": \"19991501844\",\n    \"terms_use\": \"eligendi\",\n    \"genre\": \"dolores\",\n    \"dt_born\": \"01\\\/01\\\/1970\"\n}"
+                            "raw": "{\n    \"name\": \"Matheus\",\n    \"cpf\": \"12345678980\",\n    \"cnpj\": \"73942003000118\",\n    \"phone\": \"19991501844\",\n    \"media_facebook\": \"https:\\\/\\\/facebook.com\\\/professor\",\n    \"media_instagram\": \"@linchester\",\n    \"media_whatsapp\": \"19991501844\",\n    \"terms_use\": \"aliquam\",\n    \"genre\": \"at\",\n    \"dt_born\": \"01\\\/01\\\/1970\"\n}"
                         },
                         "description": "Altera as informa\u00e7\u00f5es do professor logado. O response em caso de sucesso 200 \u00e9 a pr\u00f3pria requisi\u00e7\u00e3o dentro de 'data'.",
                         "response": []
@@ -382,7 +669,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"id_student\": 0,\n    \"type_student\": \"P\",\n    \"type_contract\": \"T\",\n    \"status\": \"magnam\",\n    \"notes\": \"Aluno antigo da escola\",\n    \"id_required_anamnesis\": 20\n}"
+                            "raw": "{\n    \"id_student\": 0,\n    \"type_student\": \"P\",\n    \"type_contract\": \"T\",\n    \"status\": \"error\",\n    \"notes\": \"Aluno antigo da escola\",\n    \"id_required_anamnesis\": 11\n}"
                         },
                         "description": "Permite que o professor atualize dados do cadastro de um aluno.",
                         "response": []
@@ -417,6 +704,44 @@
                             "raw": "[]"
                         },
                         "description": "Lista os alunos vinculados ao professor",
+                        "response": []
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Train",
+            "description": "\nGerenciamento de treinos",
+            "item": [
+                {
+                    "name": "Adiciona um treino",
+                    "request": {
+                        "url": {
+                            "protocol": "http",
+                            "host": "127.0.0.1:8000\/",
+                            "path": "api\/v1\/train",
+                            "query": []
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {token}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"id_card\": 123,\n    \"name\": \"A\",\n    \"break\": 120,\n    \"exercise_groups\": {\n        \"type\": \"BI-SET\",\n        \"order\": \"1\",\n        \"detail\": {\n            \"id_exercise\": 10,\n            \"id_equipment\": 2,\n            \"url\": \"https:\\\/\\\/youtub\\\/*e.com.br\\\/Hkh6RF2F1\",\n            \"repetition_type\": \"REPETI\\u00c7\\u00d5ES\",\n            \"charge_type\": \"KILO\",\n            \"series_interval\": 15,\n            \"notes\": \"Executar at\\u00e9 a falha\",\n            \"series\": [],\n            \"charge\": 20,\n            \"repetition\": 12,\n            \"order\": 1\n        }\n    }\n}"
+                        },
+                        "description": "Cadastra um treino a um ID de ficha existente. Exemplo de JSON na requisi\u00e7\u00e3o:\n{\n       \"id_card\": 1,\n       \"name\": \"A\",\n       \"break\": 120,\n       \"exercise_groups\": [\n           {\n               \"type\": \"TRADICIONAL\",\n               \"order\": 1,\n               \"detail\": [\n                   {\n                       \"id_exercise\": 1,\n                       \"id_equipment\": 1,\n                       \"url\": null,\n                       \"repetition_type\": \"REPETI\u00c7\u00d5ES\",\n                       \"charge_type\": \"KILO\",\n                       \"series_interval\": 60,\n                       \"notes\": null,\n                       \"series\": [\n                           {\n                               \"charge\": 30,\n                               \"repetition\": 12,\n                               \"order\": 1\n                           },\n                           {\n                               \"charge\": 30,\n                               \"repetition\": 12,\n                               \"order\": 2\n                           },\n                           {\n                               \"charge\": 30,\n                               \"repetition\": 12,\n                               \"order\": 3\n                           },\n                           {\n                               \"charge\": 30,\n                               \"repetition\": 12,\n                               \"order\": 4\n                           }\n                       ]\n                   }\n               ]\n           },\n           {\n               \"type\": \"BI-SET\",\n               \"order\": 2,\n               \"detail\": [\n                   {\n                       \"id_exercise\": 2,\n                       \"id_equipment\": 1,\n                       \"url\": null,\n                       \"repetition_type\": \"REPETI\u00c7\u00d5ES\",\n                       \"charge_type\": \"KILO\",\n                       \"series_interval\": 60,\n                       \"notes\": null,\n                       \"series\": [\n                           {\n                               \"charge\": 30,\n                               \"repetition\": 12,\n                               \"order\": 1\n                           },\n                           {\n                               \"charge\": 30,\n                               \"repetition\": 12,\n                               \"order\": 2\n                           },\n                           {\n                               \"charge\": 30,\n                               \"repetition\": 12,\n                               \"order\": 3\n                           },\n                           {\n                               \"charge\": 30,\n                               \"repetition\": 12,\n                               \"order\": 4\n                           }\n                       ]\n                   },\n                   {\n                       \"id_exercise\": 3,\n                       \"id_equipment\": 1,\n                       \"url\": null,\n                       \"repetition_type\": \"REPETI\u00c7\u00d5ES\",\n                       \"charge_type\": \"KILO\",\n                       \"series_interval\": 60,\n                       \"notes\": null,\n                       \"series\": [\n                           {\n                               \"charge\": 30,\n                               \"repetition\": 12,\n                               \"order\": 1\n                           },\n                           {\n                               \"charge\": 30,\n                               \"repetition\": 12,\n                               \"order\": 2\n                           },\n                           {\n                               \"charge\": 30,\n                               \"repetition\": 12,\n                               \"order\": 3\n                           },\n                           {\n                               \"charge\": 30,\n                               \"repetition\": 12,\n                               \"order\": 4\n                           }\n                       ]\n                   }\n               ]\n           }\n       ]\n   }",
                         "response": []
                     }
                 }
@@ -580,7 +905,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"name\": \"Matheus\",\n    \"email\": \"contato@octopusfit.com.br\",\n    \"password\": \"123!abc\",\n    \"cpf\": \"12345678980\",\n    \"cnpj\": \"modi\"\n}"
+                            "raw": "{\n    \"name\": \"Matheus\",\n    \"email\": \"contato@octopusfit.com.br\",\n    \"password\": \"123!abc\",\n    \"cpf\": \"12345678980\",\n    \"cnpj\": \"et\"\n}"
                         },
                         "description": "Cadastra um novo usu\u00e1rio Personal Trainer. O response em caso de sucesso 200 \u00e9 a pr\u00f3pria requisi\u00e7\u00e3o dentro de 'data'.",
                         "response": []

@@ -191,6 +191,676 @@ Parameter | Type | Status | Description
     
 <!-- END_a925a8d22b3615f12fca79456d286859 -->
 
+#Card
+
+
+Gerenciamento de fichas
+<!-- START_c05468726b0b6e22a35cc6246eac5562 -->
+## Listagem de fichas
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Lista as fichas cadastradas para o aluno
+
+> Example request:
+
+```bash
+curl -X GET \
+    -G "http://127.0.0.1:8000/api/v1/card/1?id=molestiae" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
+```
+
+```javascript
+const url = new URL(
+    "http://127.0.0.1:8000/api/v1/card/1"
+);
+
+let params = {
+    "id": "molestiae",
+};
+Object.keys(params)
+    .forEach(key => url.searchParams.append(key, params[key]));
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "result": true,
+    "data": [
+        {
+            "id": 1,
+            "name": "FICHA DE ADAPTAÇÃO",
+            "description": "TREINO TEMPORÁRIO DE ADAPTAÇÃO DOS GRUPOS MUSCULARES",
+            "id_teacher_student": 1,
+            "id_user": 1,
+            "dt_end": "01\/12\/2022",
+            "times": null,
+            "status": "A",
+            "created_at": "2021-10-30T14:02:23.000000Z",
+            "updated_at": "2021-10-30T14:02:23.000000Z",
+            "trains": [
+                {
+                    "id": 12,
+                    "name": "A",
+                    "break": 120,
+                    "id_card": 1,
+                    "created_at": "2021-11-01T19:55:24.000000Z",
+                    "updated_at": "2021-11-01T19:55:24.000000Z",
+                    "exercise_groups": [
+                        {
+                            "id": 11,
+                            "type": "TRADICIONAL",
+                            "id_train": 12,
+                            "order": 1,
+                            "created_at": "2021-11-01T19:55:24.000000Z",
+                            "updated_at": "2021-11-01T19:55:24.000000Z",
+                            "exercise_details": [
+                                {
+                                    "id": 10,
+                                    "id_exercise": 1,
+                                    "id_exercise_group": 11,
+                                    "id_equipment": 1,
+                                    "url": null,
+                                    "repetition_type": "REPETIÇÕES",
+                                    "charge_type": "KILO",
+                                    "series_interval": 60,
+                                    "notes": "",
+                                    "created_at": "2021-11-01T19:55:24.000000Z",
+                                    "updated_at": "2021-11-01T19:55:24.000000Z",
+                                    "exercise": {
+                                        "id": 1,
+                                        "name": "SUPINO RETO",
+                                        "description": null,
+                                        "id_muscle_group": 4,
+                                        "id_equipment": 1,
+                                        "id_user": null,
+                                        "url": null,
+                                        "musclegroup": {
+                                            "id": 4,
+                                            "name": "PEITORAL"
+                                        },
+                                        "equipment": {
+                                            "id": 1,
+                                            "name": "BANCO SUPINO"
+                                        }
+                                    },
+                                    "exercise_series": [
+                                        {
+                                            "id": 25,
+                                            "id_exercise_detail": 10,
+                                            "charge": 30,
+                                            "repetition": 12,
+                                            "order": 1,
+                                            "created_at": "2021-11-01T19:55:24.000000Z",
+                                            "updated_at": "2021-11-01T19:55:24.000000Z"
+                                        },
+                                        {
+                                            "id": 26,
+                                            "id_exercise_detail": 10,
+                                            "charge": 30,
+                                            "repetition": 12,
+                                            "order": 2,
+                                            "created_at": "2021-11-01T19:55:24.000000Z",
+                                            "updated_at": "2021-11-01T19:55:24.000000Z"
+                                        },
+                                        {
+                                            "id": 27,
+                                            "id_exercise_detail": 10,
+                                            "charge": 30,
+                                            "repetition": 12,
+                                            "order": 3,
+                                            "created_at": "2021-11-01T19:55:24.000000Z",
+                                            "updated_at": "2021-11-01T19:55:24.000000Z"
+                                        },
+                                        {
+                                            "id": 28,
+                                            "id_exercise_detail": 10,
+                                            "charge": 30,
+                                            "repetition": 12,
+                                            "order": 4,
+                                            "created_at": "2021-11-01T19:55:24.000000Z",
+                                            "updated_at": "2021-11-01T19:55:24.000000Z"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "id": 12,
+                            "type": "BI-SET",
+                            "id_train": 12,
+                            "order": 2,
+                            "created_at": "2021-11-01T19:55:24.000000Z",
+                            "updated_at": "2021-11-01T19:55:24.000000Z",
+                            "exercise_details": [
+                                {
+                                    "id": 11,
+                                    "id_exercise": 2,
+                                    "id_exercise_group": 12,
+                                    "id_equipment": 1,
+                                    "url": null,
+                                    "repetition_type": "REPETIÇÕES",
+                                    "charge_type": "KILO",
+                                    "series_interval": 60,
+                                    "notes": "",
+                                    "created_at": "2021-11-01T19:55:24.000000Z",
+                                    "updated_at": "2021-11-01T19:55:24.000000Z",
+                                    "exercise": {
+                                        "id": 2,
+                                        "name": "CRUCIFIXO INCLINADO",
+                                        "description": null,
+                                        "id_muscle_group": 4,
+                                        "id_equipment": 2,
+                                        "id_user": null,
+                                        "url": null,
+                                        "musclegroup": {
+                                            "id": 4,
+                                            "name": "PEITORAL"
+                                        },
+                                        "equipment": {
+                                            "id": 2,
+                                            "name": "BANCO RECLINÁVEL"
+                                        }
+                                    },
+                                    "exercise_series": [
+                                        {
+                                            "id": 29,
+                                            "id_exercise_detail": 11,
+                                            "charge": 30,
+                                            "repetition": 12,
+                                            "order": 1,
+                                            "created_at": "2021-11-01T19:55:24.000000Z",
+                                            "updated_at": "2021-11-01T19:55:24.000000Z"
+                                        },
+                                        {
+                                            "id": 30,
+                                            "id_exercise_detail": 11,
+                                            "charge": 30,
+                                            "repetition": 12,
+                                            "order": 2,
+                                            "created_at": "2021-11-01T19:55:24.000000Z",
+                                            "updated_at": "2021-11-01T19:55:24.000000Z"
+                                        },
+                                        {
+                                            "id": 31,
+                                            "id_exercise_detail": 11,
+                                            "charge": 30,
+                                            "repetition": 12,
+                                            "order": 3,
+                                            "created_at": "2021-11-01T19:55:24.000000Z",
+                                            "updated_at": "2021-11-01T19:55:24.000000Z"
+                                        },
+                                        {
+                                            "id": 32,
+                                            "id_exercise_detail": 11,
+                                            "charge": 30,
+                                            "repetition": 12,
+                                            "order": 4,
+                                            "created_at": "2021-11-01T19:55:24.000000Z",
+                                            "updated_at": "2021-11-01T19:55:24.000000Z"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "id": 12,
+                                    "id_exercise": 3,
+                                    "id_exercise_group": 12,
+                                    "id_equipment": 1,
+                                    "url": null,
+                                    "repetition_type": "REPETIÇÕES",
+                                    "charge_type": "KILO",
+                                    "series_interval": 60,
+                                    "notes": "",
+                                    "created_at": "2021-11-01T19:55:24.000000Z",
+                                    "updated_at": "2021-11-01T19:55:24.000000Z",
+                                    "exercise": {
+                                        "id": 3,
+                                        "name": "CROSS OVER",
+                                        "description": null,
+                                        "id_muscle_group": 4,
+                                        "id_equipment": 1,
+                                        "id_user": null,
+                                        "url": null,
+                                        "musclegroup": {
+                                            "id": 4,
+                                            "name": "PEITORAL"
+                                        },
+                                        "equipment": {
+                                            "id": 1,
+                                            "name": "BANCO SUPINO"
+                                        }
+                                    },
+                                    "exercise_series": [
+                                        {
+                                            "id": 33,
+                                            "id_exercise_detail": 12,
+                                            "charge": 30,
+                                            "repetition": 12,
+                                            "order": 1,
+                                            "created_at": "2021-11-01T19:55:24.000000Z",
+                                            "updated_at": "2021-11-01T19:55:24.000000Z"
+                                        },
+                                        {
+                                            "id": 34,
+                                            "id_exercise_detail": 12,
+                                            "charge": 30,
+                                            "repetition": 12,
+                                            "order": 2,
+                                            "created_at": "2021-11-01T19:55:24.000000Z",
+                                            "updated_at": "2021-11-01T19:55:24.000000Z"
+                                        },
+                                        {
+                                            "id": 35,
+                                            "id_exercise_detail": 12,
+                                            "charge": 30,
+                                            "repetition": 12,
+                                            "order": 3,
+                                            "created_at": "2021-11-01T19:55:24.000000Z",
+                                            "updated_at": "2021-11-01T19:55:24.000000Z"
+                                        },
+                                        {
+                                            "id": 36,
+                                            "id_exercise_detail": 12,
+                                            "charge": 30,
+                                            "repetition": 12,
+                                            "order": 4,
+                                            "created_at": "2021-11-01T19:55:24.000000Z",
+                                            "updated_at": "2021-11-01T19:55:24.000000Z"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+```
+
+### HTTP Request
+`GET api/v1/card/{id}`
+
+#### Query Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -----------
+    `id` |  required  | O ID do aluno.
+
+<!-- END_c05468726b0b6e22a35cc6246eac5562 -->
+
+<!-- START_15961bf6f21defc4b4433721c0a07c01 -->
+## Adiciona uma nova ficha
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Cadastra uma ficha modelo caso o parâmetro id_student esteja nulo, do contrário atribui ao aluno.
+
+> Example request:
+
+```bash
+curl -X POST \
+    "http://127.0.0.1:8000/api/v1/card" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}" \
+    -d '{"name":"Ficha de adapta\u00e7\u00e3o","description":"Treino tempor\u00e1rio de adapta\u00e7\u00e3o dos grupos musculares","id_student":15,"dt_end":"01\/01\/2022","times":12}'
+
+```
+
+```javascript
+const url = new URL(
+    "http://127.0.0.1:8000/api/v1/card"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+let body = {
+    "name": "Ficha de adapta\u00e7\u00e3o",
+    "description": "Treino tempor\u00e1rio de adapta\u00e7\u00e3o dos grupos musculares",
+    "id_student": 15,
+    "dt_end": "01\/01\/2022",
+    "times": 12
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "result": true,
+    "data": {},
+    "message": "Mensagem de erro se houver"
+}
+```
+
+### HTTP Request
+`POST api/v1/card`
+
+#### Body Parameters
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    `name` | string |  required  | Nome da ficha.
+        `description` | string |  optional  | Descrição opcional.
+        `id_student` | integer |  optional  | ID do aluno
+        `dt_end` | date |  optional  | Data de término.
+        `times` | integer |  optional  | número de vezes que a ficha deve ser executada
+    
+<!-- END_15961bf6f21defc4b4433721c0a07c01 -->
+
+#Equipment
+
+
+Equipamentos cadastrados
+<!-- START_12a211602c23da463598adc31c06a157 -->
+## Listagem de equipamentos
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Lista os equipamentos públicos cadastrados em ordem albafética
+
+> Example request:
+
+```bash
+curl -X GET \
+    -G "http://127.0.0.1:8000/api/v1/equipment" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
+```
+
+```javascript
+const url = new URL(
+    "http://127.0.0.1:8000/api/v1/equipment"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "result": true,
+    "data": [
+        {
+            "id": 2,
+            "name": "BANCO RECLINÁVEL"
+        },
+        {
+            "id": 3,
+            "name": "BOX JUMP"
+        }
+    ]
+}
+```
+
+### HTTP Request
+`GET api/v1/equipment`
+
+
+<!-- END_12a211602c23da463598adc31c06a157 -->
+
+#Exercise
+
+
+Gerenciamento de exercícios
+<!-- START_c8b2c3e4ea3ea06882f95382630b28af -->
+## Listagem de exercícios
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Lista os exercícios públicos e privados (cadastrados pelo usuário)
+
+> Example request:
+
+```bash
+curl -X GET \
+    -G "http://127.0.0.1:8000/api/v1/exercise" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
+```
+
+```javascript
+const url = new URL(
+    "http://127.0.0.1:8000/api/v1/exercise"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+null
+```
+
+### HTTP Request
+`GET api/v1/exercise`
+
+
+<!-- END_c8b2c3e4ea3ea06882f95382630b28af -->
+
+<!-- START_2834144fec25709e2991bacc1715991d -->
+## Listagem de tipos de exercícios
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Lista as grupos de exercícios possíveis
+
+> Example request:
+
+```bash
+curl -X GET \
+    -G "http://127.0.0.1:8000/api/v1/exercise/group-type" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
+```
+
+```javascript
+const url = new URL(
+    "http://127.0.0.1:8000/api/v1/exercise/group-type"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "result": true,
+    "data": [
+        "TRADICIONAL",
+        "BI-SET",
+        "TRI-SET",
+        "DROP-SET",
+        "TEXTO LIVRE"
+    ]
+}
+```
+
+### HTTP Request
+`GET api/v1/exercise/group-type`
+
+
+<!-- END_2834144fec25709e2991bacc1715991d -->
+
+<!-- START_2f0381ce5d17640da2edd80932a485a8 -->
+## Listagem de tipos de repetições
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Lista os tipos de repetições para os exercícios
+
+> Example request:
+
+```bash
+curl -X GET \
+    -G "http://127.0.0.1:8000/api/v1/exercise/repetition-type" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
+```
+
+```javascript
+const url = new URL(
+    "http://127.0.0.1:8000/api/v1/exercise/repetition-type"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "result": true,
+    "data": [
+        "REPETIÇÕES",
+        "MINUTOS",
+        "SEGUNDOS"
+    ]
+}
+```
+
+### HTTP Request
+`GET api/v1/exercise/repetition-type`
+
+
+<!-- END_2f0381ce5d17640da2edd80932a485a8 -->
+
+<!-- START_28f8623f2716b4f0b8ccb01c27564ad0 -->
+## Listagem de tipos de pesos
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Lista os tipos de pesos a serem usados nos exercícios
+
+> Example request:
+
+```bash
+curl -X GET \
+    -G "http://127.0.0.1:8000/api/v1/exercise/charge-type" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
+```
+
+```javascript
+const url = new URL(
+    "http://127.0.0.1:8000/api/v1/exercise/charge-type"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "result": true,
+    "data": [
+        "KILO",
+        "LIBRA",
+        "PESO",
+        "POR CENTO"
+    ]
+}
+```
+
+### HTTP Request
+`GET api/v1/exercise/charge-type`
+
+
+<!-- END_28f8623f2716b4f0b8ccb01c27564ad0 -->
+
 #File
 
 
@@ -275,7 +945,7 @@ curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}" \
-    -d '{"category":"quasi"}'
+    -d '{"category":"exercitationem"}'
 
 ```
 
@@ -291,7 +961,7 @@ let headers = {
 };
 
 let body = {
-    "category": "quasi"
+    "category": "exercitationem"
 }
 
 fetch(url, {
@@ -332,7 +1002,7 @@ Remove um arquivo do usuário da base de dados
 
 ```bash
 curl -X DELETE \
-    "http://127.0.0.1:8000/api/v1/file/1?id=debitis" \
+    "http://127.0.0.1:8000/api/v1/file/1?id=est" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}"
@@ -344,7 +1014,7 @@ const url = new URL(
 );
 
 let params = {
-    "id": "debitis",
+    "id": "est",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -380,7 +1050,7 @@ fetch(url, {
 
 Parameter | Status | Description
 --------- | ------- | ------- | -----------
-    `id` |  optional  | integer required O ID do documento a ser removido.
+    `id` |  required  | O ID do documento a ser removido.
 
 <!-- END_97a06e6531b3f9cf4507c08e7f82a231 -->
 
@@ -438,6 +1108,70 @@ fetch(url, {
 
 
 <!-- END_deb22f3ab09814614b6a2a19e50603a0 -->
+
+#Muscle-Groups
+
+
+Grupos musculares cadastrados
+<!-- START_69fc910fb27dd32e65af3b839199a617 -->
+## Listagem de grupos musculares
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Lista os grupos musculares públicos cadastrados em ordem albafética
+
+> Example request:
+
+```bash
+curl -X GET \
+    -G "http://127.0.0.1:8000/api/v1/muscle-group" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
+```
+
+```javascript
+const url = new URL(
+    "http://127.0.0.1:8000/api/v1/muscle-group"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "result": true,
+    "data": [
+        {
+            "id": 6,
+            "name": "ABDOMINAL"
+        },
+        {
+            "id": 2,
+            "name": "BÍCEPS"
+        }
+    ]
+}
+```
+
+### HTTP Request
+`GET api/v1/muscle-group`
+
+
+<!-- END_69fc910fb27dd32e65af3b839199a617 -->
 
 #Student
 
@@ -522,7 +1256,7 @@ curl -X PUT \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}" \
-    -d '{"name":"Matheus","cpf":"12345678980","cnpj":"73942003000118","phone":"19991501844","media_facebook":"https:\/\/facebook.com\/professor","media_instagram":"@linchester","media_whatsapp":"19991501844","terms_use":"eligendi","genre":"dolores","dt_born":"01\/01\/1970"}'
+    -d '{"name":"Matheus","cpf":"12345678980","cnpj":"73942003000118","phone":"19991501844","media_facebook":"https:\/\/facebook.com\/professor","media_instagram":"@linchester","media_whatsapp":"19991501844","terms_use":"aliquam","genre":"at","dt_born":"01\/01\/1970"}'
 
 ```
 
@@ -545,8 +1279,8 @@ let body = {
     "media_facebook": "https:\/\/facebook.com\/professor",
     "media_instagram": "@linchester",
     "media_whatsapp": "19991501844",
-    "terms_use": "eligendi",
-    "genre": "dolores",
+    "terms_use": "aliquam",
+    "genre": "at",
     "dt_born": "01\/01\/1970"
 }
 
@@ -675,7 +1409,7 @@ curl -X PUT \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}" \
-    -d '{"id_student":0,"type_student":"P","type_contract":"T","status":"magnam","notes":"Aluno antigo da escola","id_required_anamnesis":20}'
+    -d '{"id_student":0,"type_student":"P","type_contract":"T","status":"error","notes":"Aluno antigo da escola","id_required_anamnesis":11}'
 
 ```
 
@@ -694,9 +1428,9 @@ let body = {
     "id_student": 0,
     "type_student": "P",
     "type_contract": "T",
-    "status": "magnam",
+    "status": "error",
     "notes": "Aluno antigo da escola",
-    "id_required_anamnesis": 20
+    "id_required_anamnesis": 11
 }
 
 fetch(url, {
@@ -803,6 +1537,221 @@ fetch(url, {
 
 
 <!-- END_e9b54d1b794da3a0b76d1837c45b401c -->
+
+#Train
+
+
+Gerenciamento de treinos
+<!-- START_42a9b4fe5a27ccffaf2cb62a5bc42bf8 -->
+## Adiciona um treino
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+Cadastra um treino a um ID de ficha existente. Exemplo de JSON na requisição:
+{
+       "id_card": 1,
+       "name": "A",
+       "break": 120,
+       "exercise_groups": [
+           {
+               "type": "TRADICIONAL",
+               "order": 1,
+               "detail": [
+                   {
+                       "id_exercise": 1,
+                       "id_equipment": 1,
+                       "url": null,
+                       "repetition_type": "REPETIÇÕES",
+                       "charge_type": "KILO",
+                       "series_interval": 60,
+                       "notes": null,
+                       "series": [
+                           {
+                               "charge": 30,
+                               "repetition": 12,
+                               "order": 1
+                           },
+                           {
+                               "charge": 30,
+                               "repetition": 12,
+                               "order": 2
+                           },
+                           {
+                               "charge": 30,
+                               "repetition": 12,
+                               "order": 3
+                           },
+                           {
+                               "charge": 30,
+                               "repetition": 12,
+                               "order": 4
+                           }
+                       ]
+                   }
+               ]
+           },
+           {
+               "type": "BI-SET",
+               "order": 2,
+               "detail": [
+                   {
+                       "id_exercise": 2,
+                       "id_equipment": 1,
+                       "url": null,
+                       "repetition_type": "REPETIÇÕES",
+                       "charge_type": "KILO",
+                       "series_interval": 60,
+                       "notes": null,
+                       "series": [
+                           {
+                               "charge": 30,
+                               "repetition": 12,
+                               "order": 1
+                           },
+                           {
+                               "charge": 30,
+                               "repetition": 12,
+                               "order": 2
+                           },
+                           {
+                               "charge": 30,
+                               "repetition": 12,
+                               "order": 3
+                           },
+                           {
+                               "charge": 30,
+                               "repetition": 12,
+                               "order": 4
+                           }
+                       ]
+                   },
+                   {
+                       "id_exercise": 3,
+                       "id_equipment": 1,
+                       "url": null,
+                       "repetition_type": "REPETIÇÕES",
+                       "charge_type": "KILO",
+                       "series_interval": 60,
+                       "notes": null,
+                       "series": [
+                           {
+                               "charge": 30,
+                               "repetition": 12,
+                               "order": 1
+                           },
+                           {
+                               "charge": 30,
+                               "repetition": 12,
+                               "order": 2
+                           },
+                           {
+                               "charge": 30,
+                               "repetition": 12,
+                               "order": 3
+                           },
+                           {
+                               "charge": 30,
+                               "repetition": 12,
+                               "order": 4
+                           }
+                       ]
+                   }
+               ]
+           }
+       ]
+   }
+
+> Example request:
+
+```bash
+curl -X POST \
+    "http://127.0.0.1:8000/api/v1/train" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}" \
+    -d '{"id_card":123,"name":"A","break":120,"exercise_groups":{"type":"BI-SET","order":"1","detail":{"id_exercise":10,"id_equipment":2,"url":"https:\/\/youtub\/*e.com.br\/Hkh6RF2F1","repetition_type":"REPETI\u00c7\u00d5ES","charge_type":"KILO","series_interval":15,"notes":"Executar at\u00e9 a falha","series":[],"charge":20,"repetition":12,"order":1}}}'
+
+```
+
+```javascript
+const url = new URL(
+    "http://127.0.0.1:8000/api/v1/train"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+let body = {
+    "id_card": 123,
+    "name": "A",
+    "break": 120,
+    "exercise_groups": {
+        "type": "BI-SET",
+        "order": "1",
+        "detail": {
+            "id_exercise": 10,
+            "id_equipment": 2,
+            "url": "https:\/\/youtub\/*e.com.br\/Hkh6RF2F1",
+            "repetition_type": "REPETI\u00c7\u00d5ES",
+            "charge_type": "KILO",
+            "series_interval": 15,
+            "notes": "Executar at\u00e9 a falha",
+            "series": [],
+            "charge": 20,
+            "repetition": 12,
+            "order": 1
+        }
+    }
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "result": true,
+    "data": {},
+    "message": "Mensagem de erro se houver"
+}
+```
+
+### HTTP Request
+`POST api/v1/train`
+
+#### Body Parameters
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    `id_card` | integer |  required  | ID da ficha.
+        `name` | string |  required  | Nome do treino.
+        `break` | integer |  required  | Tempo em segundos para descanso entre exercícios.
+        `exercise_groups` | array |  required  | Array de objetos JSON que conterá os exercícios
+        `exercise_groups.type` | string |  required  | Tipos de grupos de exercícios. Ver em exercise/group-type
+        `exercise_groups.order` | required |  optional  | integer Ordenação dos exercícios.
+        `exercise_groups.detail` | array |  required  | Array de objetos JSON com os detalhes do(s) exercício(s).
+        `exercise_groups.detail.id_exercise` | integer |  required  | ID do exercício.
+        `exercise_groups.detail.id_equipment` | integer |  required  | ID do equipamento.
+        `exercise_groups.detail.url` | string |  optional  | URL do vídeo exemplo.
+        `exercise_groups.detail.repetition_type` | string |  required  | Tipo das repetições. Ver em exercise/repetition-type.
+        `exercise_groups.detail.charge_type` | string |  required  | Tipo de peso utilizado. Ver em exercise/charge-type.
+        `exercise_groups.detail.series_interval` | integer |  required  | Array de objetos JSON com os detalhes do(s) exercício(s).
+        `exercise_groups.detail.notes` | string |  optional  | Observações opcionais.
+        `exercise_groups.detail.series` | array |  required  | Array de objetos JSON com os detalhes da series.
+        `exercise_groups.detail.charge` | integer |  required  | Numéro do peso recomendado.
+        `exercise_groups.detail.repetition` | integer |  required  | Número de repetições da serie.
+        `exercise_groups.detail.order` | integer |  required  | Ordenação das repetições.
+    
+<!-- END_42a9b4fe5a27ccffaf2cb62a5bc42bf8 -->
 
 #User
 
@@ -1112,7 +2061,7 @@ curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer {token}" \
-    -d '{"name":"Matheus","email":"contato@octopusfit.com.br","password":"123!abc","cpf":"12345678980","cnpj":"modi"}'
+    -d '{"name":"Matheus","email":"contato@octopusfit.com.br","password":"123!abc","cpf":"12345678980","cnpj":"et"}'
 
 ```
 
@@ -1132,7 +2081,7 @@ let body = {
     "email": "contato@octopusfit.com.br",
     "password": "123!abc",
     "cpf": "12345678980",
-    "cnpj": "modi"
+    "cnpj": "et"
 }
 
 fetch(url, {

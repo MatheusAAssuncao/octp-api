@@ -1,9 +1,14 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CardController;
+use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\MuscleGroupController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\TrainController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -53,6 +58,36 @@ Route::group(['middleware' => 'jwt.auth', 'prefix' => 'v1'], function ($router) 
     Route::post('file', [FileController::class, 'store']); // cadastrar documento
     Route::delete('file/{id}', [FileController::class, 'destroy']); // remover documento
     Route::get('file/category', [FileController::class, 'showCategory']); // listar categorias
+
+    /**
+     * Cards
+     */
+    Route::get('card/{id}', [CardController::class, 'index']); // listar os cards cadastrados a um aluno
+    Route::post('card', [CardController::class, 'create']); // cadastrar uma ficha a um aluno
+
+    /**
+     * Train
+     */
+    Route::post('train', [TrainController::class, 'create']); // cadastrar um treino a um aluno
+    Route::delete('train/{id}', [TrainController::class, 'destroy']); // remover treino
+
+    /**
+     * Exercise
+     */
+    Route::get('exercise', [ExerciseController::class, 'index']); // listar exercícios
+    Route::get('exercise/group-type', [ExerciseController::class, 'showGroupType']); // listar tipos de exercícios
+    Route::get('exercise/repetition-type', [ExerciseController::class, 'showRepetitionType']); // listar tipos de repetições
+    Route::get('exercise/charge-type', [ExerciseController::class, 'showChargeType']); // listar tipos de pesos
+
+    /**
+     * Equipments
+     */
+    Route::get('equipment', [EquipmentController::class, 'index']); // listar equipamentos
+
+    /**
+     * Muscle Groups
+     */
+    Route::get('muscle-group', [MuscleGroupController::class, 'index']); // listar grupos musculares
 });
 
 Route::post('auth/login', [AuthController::class, 'login']); // login

@@ -130,7 +130,7 @@ class FileController extends Controller
      *
      * @authenticated
      * 
-     * @queryParam  id integer required O ID do documento a ser removido.
+     * @queryParam id required O ID do documento a ser removido.
      * 
      * @response {
      *   "result": true,
