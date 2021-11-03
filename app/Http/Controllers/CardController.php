@@ -17,7 +17,7 @@ class CardController extends Controller
 {
     /**
      * 
-     * Listagem de fichas
+     * Listagem de fichas de aluno
      * 
      * Lista as fichas cadastradas para o aluno
      *
@@ -277,7 +277,7 @@ class CardController extends Controller
      *        }]
      * }
      */
-    public function index($id)
+    public function getCardFromStudent($id)
     {
         $user = auth('api')->user();
         if ($user->isTeacher()) {
@@ -302,6 +302,280 @@ class CardController extends Controller
 
     /**
      * 
+     * Listagem de fichas modelo
+     * 
+     * Lista as fichas cadastradas pelo usuário como modelo
+     *
+     * @authenticated
+     * 
+     * @response {
+     *   "result": true,
+     *   "data": [{
+     *        "id": 1,
+     *        "name": "MODELO DE FICHA DE ADAPTAÇÃO",
+     *        "description": "TREINO TEMPORÁRIO DE ADAPTAÇÃO DOS GRUPOS MUSCULARES",
+     *        "id_teacher_student": null,
+     *        "id_user": 1,
+     *        "dt_end": null,
+     *        "times": null,
+     *        "status": "A",
+     *        "created_at": "2021-10-30T14:02:23.000000Z",
+     *        "updated_at": "2021-10-30T14:02:23.000000Z",
+     *        "trains": [
+     *            {
+     *            "id": 12,
+     *            "name": "A",
+     *            "break": 120,
+     *            "id_card": 1,
+     *            "created_at": "2021-11-01T19:55:24.000000Z",
+     *            "updated_at": "2021-11-01T19:55:24.000000Z",
+     *            "exercise_groups": [
+     *                {
+     *                "id": 11,
+     *                "type": "TRADICIONAL",
+     *                "id_train": 12,
+     *                "order": 1,
+     *                "created_at": "2021-11-01T19:55:24.000000Z",
+     *                "updated_at": "2021-11-01T19:55:24.000000Z",
+     *                "exercise_details": [
+     *                    {
+     *                    "id": 10,
+     *                    "id_exercise": 1,
+     *                    "id_exercise_group": 11,
+     *                    "id_equipment": 1,
+     *                    "url": null,
+     *                    "repetition_type": "REPETIÇÕES",
+     *                    "charge_type": "KILO",
+     *                    "series_interval": 60,
+     *                    "notes": "",
+     *                    "created_at": "2021-11-01T19:55:24.000000Z",
+     *                    "updated_at": "2021-11-01T19:55:24.000000Z",
+     *                    "exercise": {
+     *                        "id": 1,
+     *                        "name": "SUPINO RETO",
+     *                        "description": null,
+     *                        "id_muscle_group": 4,
+     *                        "id_equipment": 1,
+     *                        "id_user": null,
+     *                        "url": null,
+     *                        "musclegroup": {
+     *                        "id": 4,
+     *                        "name": "PEITORAL"
+     *                        },
+     *                        "equipment": {
+     *                        "id": 1,
+     *                        "name": "BANCO SUPINO"
+     *                        }
+     *                    },
+     *                    "exercise_series": [
+     *                        {
+     *                        "id": 25,
+     *                        "id_exercise_detail": 10,
+     *                        "charge": 30,
+     *                        "repetition": 12,
+     *                        "order": 1,
+     *                        "created_at": "2021-11-01T19:55:24.000000Z",
+     *                        "updated_at": "2021-11-01T19:55:24.000000Z"
+     *                        },
+     *                        {
+     *                        "id": 26,
+     *                        "id_exercise_detail": 10,
+     *                        "charge": 30,
+     *                        "repetition": 12,
+     *                        "order": 2,
+     *                        "created_at": "2021-11-01T19:55:24.000000Z",
+     *                        "updated_at": "2021-11-01T19:55:24.000000Z"
+     *                        },
+     *                        {
+     *                        "id": 27,
+     *                        "id_exercise_detail": 10,
+     *                        "charge": 30,
+     *                        "repetition": 12,
+     *                        "order": 3,
+     *                        "created_at": "2021-11-01T19:55:24.000000Z",
+     *                        "updated_at": "2021-11-01T19:55:24.000000Z"
+     *                        },
+     *                        {
+     *                        "id": 28,
+     *                        "id_exercise_detail": 10,
+     *                        "charge": 30,
+     *                        "repetition": 12,
+     *                        "order": 4,
+     *                        "created_at": "2021-11-01T19:55:24.000000Z",
+     *                        "updated_at": "2021-11-01T19:55:24.000000Z"
+     *                        }
+     *                    ]
+     *                    }
+     *                ]
+     *                },
+     *                {
+     *                "id": 12,
+     *                "type": "BI-SET",
+     *                "id_train": 12,
+     *                "order": 2,
+     *                "created_at": "2021-11-01T19:55:24.000000Z",
+     *                "updated_at": "2021-11-01T19:55:24.000000Z",
+     *                "exercise_details": [
+     *                    {
+     *                    "id": 11,
+     *                    "id_exercise": 2,
+     *                    "id_exercise_group": 12,
+     *                    "id_equipment": 1,
+     *                    "url": null,
+     *                    "repetition_type": "REPETIÇÕES",
+     *                    "charge_type": "KILO",
+     *                    "series_interval": 60,
+     *                    "notes": "",
+     *                    "created_at": "2021-11-01T19:55:24.000000Z",
+     *                    "updated_at": "2021-11-01T19:55:24.000000Z",
+     *                    "exercise": {
+     *                        "id": 2,
+     *                        "name": "CRUCIFIXO INCLINADO",
+     *                        "description": null,
+     *                        "id_muscle_group": 4,
+     *                        "id_equipment": 2,
+     *                        "id_user": null,
+     *                        "url": null,
+     *                        "musclegroup": {
+     *                        "id": 4,
+     *                        "name": "PEITORAL"
+     *                        },
+     *                        "equipment": {
+     *                        "id": 2,
+     *                        "name": "BANCO RECLINÁVEL"
+     *                        }
+     *                    },
+     *                    "exercise_series": [
+     *                        {
+     *                        "id": 29,
+     *                        "id_exercise_detail": 11,
+     *                        "charge": 30,
+     *                        "repetition": 12,
+     *                        "order": 1,
+     *                        "created_at": "2021-11-01T19:55:24.000000Z",
+     *                        "updated_at": "2021-11-01T19:55:24.000000Z"
+     *                        },
+     *                        {
+     *                        "id": 30,
+     *                        "id_exercise_detail": 11,
+     *                        "charge": 30,
+     *                        "repetition": 12,
+     *                        "order": 2,
+     *                        "created_at": "2021-11-01T19:55:24.000000Z",
+     *                        "updated_at": "2021-11-01T19:55:24.000000Z"
+     *                        },
+     *                        {
+     *                        "id": 31,
+     *                        "id_exercise_detail": 11,
+     *                        "charge": 30,
+     *                        "repetition": 12,
+     *                        "order": 3,
+     *                        "created_at": "2021-11-01T19:55:24.000000Z",
+     *                        "updated_at": "2021-11-01T19:55:24.000000Z"
+     *                        },
+     *                        {
+     *                        "id": 32,
+     *                        "id_exercise_detail": 11,
+     *                        "charge": 30,
+     *                        "repetition": 12,
+     *                        "order": 4,
+     *                        "created_at": "2021-11-01T19:55:24.000000Z",
+     *                        "updated_at": "2021-11-01T19:55:24.000000Z"
+     *                        }
+     *                    ]
+     *                    },
+     *                    {
+     *                    "id": 12,
+     *                    "id_exercise": 3,
+     *                    "id_exercise_group": 12,
+     *                    "id_equipment": 1,
+     *                    "url": null,
+     *                    "repetition_type": "REPETIÇÕES",
+     *                    "charge_type": "KILO",
+     *                    "series_interval": 60,
+     *                    "notes": "",
+     *                    "created_at": "2021-11-01T19:55:24.000000Z",
+     *                    "updated_at": "2021-11-01T19:55:24.000000Z",
+     *                    "exercise": {
+     *                        "id": 3,
+     *                        "name": "CROSS OVER",
+     *                        "description": null,
+     *                        "id_muscle_group": 4,
+     *                        "id_equipment": 1,
+     *                        "id_user": null,
+     *                        "url": null,
+     *                        "musclegroup": {
+     *                        "id": 4,
+     *                        "name": "PEITORAL"
+     *                        },
+     *                        "equipment": {
+     *                        "id": 1,
+     *                        "name": "BANCO SUPINO"
+     *                        }
+     *                    },
+     *                    "exercise_series": [
+     *                        {
+     *                        "id": 33,
+     *                        "id_exercise_detail": 12,
+     *                        "charge": 30,
+     *                        "repetition": 12,
+     *                        "order": 1,
+     *                        "created_at": "2021-11-01T19:55:24.000000Z",
+     *                        "updated_at": "2021-11-01T19:55:24.000000Z"
+     *                        },
+     *                        {
+     *                        "id": 34,
+     *                        "id_exercise_detail": 12,
+     *                        "charge": 30,
+     *                        "repetition": 12,
+     *                        "order": 2,
+     *                        "created_at": "2021-11-01T19:55:24.000000Z",
+     *                        "updated_at": "2021-11-01T19:55:24.000000Z"
+     *                        },
+     *                        {
+     *                        "id": 35,
+     *                        "id_exercise_detail": 12,
+     *                        "charge": 30,
+     *                        "repetition": 12,
+     *                        "order": 3,
+     *                        "created_at": "2021-11-01T19:55:24.000000Z",
+     *                        "updated_at": "2021-11-01T19:55:24.000000Z"
+     *                        },
+     *                        {
+     *                        "id": 36,
+     *                        "id_exercise_detail": 12,
+     *                        "charge": 30,
+     *                        "repetition": 12,
+     *                        "order": 4,
+     *                        "created_at": "2021-11-01T19:55:24.000000Z",
+     *                        "updated_at": "2021-11-01T19:55:24.000000Z"
+     *                        }
+     *                    ]
+     *                    }
+     *                ]
+     *                }
+     *            ]
+     *            }
+     *        ]
+     *        }]
+     * }
+     */
+    public function index()
+    {
+        $user = auth('api')->user();
+        if (!$user->isTeacher()) {
+            abort(404);
+        }
+
+        $_card = Card::where('id_teacher_student', null)
+            ->where('id_user', $user->id)
+            ->get();
+        
+        return response()->json(['result' => true, 'data' => $_card]);
+    }
+
+    /**
+     * 
      * Adiciona uma nova ficha
      * 
      * Cadastra uma ficha modelo caso o parâmetro id_student esteja nulo, do contrário atribui ao aluno.
@@ -312,7 +586,7 @@ class CardController extends Controller
      * @bodyParam  description string Descrição opcional. Example: Treino temporário de adaptação dos grupos musculares
      * @bodyParam  id_student integer ID do aluno
      * @bodyParam  dt_end date Data de término. Example: 01/01/2022
-     * @bodyParam  times integer número de vezes que a ficha deve ser executada
+     * @bodyParam  times integer número de vezes que a ficha deve ser executada. Example: 12
      * 
      * @response {
      *   "result": true,
@@ -342,6 +616,7 @@ class CardController extends Controller
 
         try {
             $status = 'A';
+            $id_teacher_student = null;
             if ($request->input('id_student')) {
                 $_teacherStudent = TeacherStudent::where('id_teacher', $_teacher->id)
                     ->where('id_student', $request->input('id_student'))
@@ -354,13 +629,15 @@ class CardController extends Controller
                     ->where('id_teacher_student', $_teacherStudent->id)
                     ->where('status', 'A')
                     ->exists();
+                
                 $status = $exists ? 'I' : 'A';
+                $id_teacher_student = $_teacherStudent->id;
             }
             
             $_card = Card::create([
                 'name' => $request->input('name'),
                 'description' => $request->input('description'),
-                'id_teacher_student' => $_teacherStudent->id,
+                'id_teacher_student' => $id_teacher_student,
                 'id_user' => $_teacher->id,
                 'dt_end' => $request->input('dt_end'),
                 'times' => $request->input('times'),
@@ -393,13 +670,89 @@ class CardController extends Controller
         //
     }
 
-    public function update(Request $request, Card $card)
+    /**
+     * 
+     * Alterar dados da ficha
+     * 
+     * Altera as informações da ficha. O response em caso de sucesso 200 é a própria requisição dentro de 'data'.
+     *
+     * @authenticated
+     * 
+     * @bodyParam  id integer required ID da ficha. Example: 1
+     * @bodyParam  name string required Nome da ficha. Example: Ficha de adaptação
+     * @bodyParam  description string Descrição opcional. Example: Treino temporário de adaptação dos grupos musculares
+     * @bodyParam  dt_end date Data de término. Example: 01/01/2022
+     * @bodyParam  times integer número de vezes que a ficha deve ser executada. Example: 12
+     * 
+     * @response {
+     *   "result": true,
+     *   "data": {
+     *   },
+     *   "message": "Mensagem de erro se houver"
+     * }
+     */
+    public function update(Request $request)
     {
-        //
+        try {
+            $_teacher = auth('api')->user();
+            if (!$_teacher->isTeacher()) {
+                abort(404);
+            }
+
+            $validation = Validator::make($request->all(), [
+                'id' => 'required|exists:App\Models\Card,id',
+                'name' => 'required|min:6|max:45',
+                'description' => 'nullable|max:100',
+                'dt_end' => 'nullable|date_format:d/m/Y|after:today',
+                'times' => 'nullable|integer',
+            ]);
+    
+            if ($validation->fails()) {
+                return response()->json(['result' => false, 'message' => "Campos incorretos!", 'data' => $validation->errors()]);
+            }
+
+            $_card = Card::findOrFail($request->input('id'));
+            $_card->name = $request->input('name');
+            $_card->description = $request->input('description');
+            $_card->dt_end = $request->input('dt_end');
+            $_card->times = $request->input('times');
+            $_card->save();
+    
+            return response()->json(['result' => true, 'data' => $request->all()]);
+        } catch(Exception $ex) {
+            return response()->json([
+                'result' => false, 
+                'message' => "Erro ao atualizar a ficha!", 
+                'ex' => $ex->getMessage()
+            ]);
+        }
     }
 
-    public function destroy(Card $card)
+    /**
+     * 
+     * Remover ficha
+     * 
+     * Remove uma ficha
+     *
+     * @authenticated
+     * 
+     * @queryParam id required O ID da ficha a ser removida.
+     * 
+     * @response {
+     *   "result": true,
+     *   "message": "Ficha removida com sucesso!"
+     * }
+     */
+    public function destroy($id)
     {
-        //
+        $_teacher = auth('api')->user();
+        if (!$_teacher->isTeacher()) {
+            abort(404);
+        }
+
+        $_card = Card::findOrFail($id);
+        $_card->delete();
+
+        return response()->json(['result' => true, 'message' => "Ficha removida com sucesso!"]);
     }
 }

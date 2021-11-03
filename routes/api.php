@@ -62,8 +62,11 @@ Route::group(['middleware' => 'jwt.auth', 'prefix' => 'v1'], function ($router) 
     /**
      * Cards
      */
-    Route::get('card/{id}', [CardController::class, 'index']); // listar os cards cadastrados a um aluno
+    Route::get('card', [CardController::class, 'index']); // listar os modelos de cards cadastrados
+    Route::get('card/{id}', [CardController::class, 'getCardFromStudent']); // listar os cards cadastrados a um aluno
     Route::post('card', [CardController::class, 'create']); // cadastrar uma ficha a um aluno
+    Route::put('card', [CardController::class, 'update']); // alterar dados da ficha
+    Route::delete('card/{id}', [CardController::class, 'destroy']); // remove uma ficha modelo
 
     /**
      * Train
