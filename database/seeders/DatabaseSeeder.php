@@ -71,5 +71,11 @@ class DatabaseSeeder extends Seeder
             'content' => Template::getHtml('EMAIL-CONVITE-ALUNO'),
             'status' => 'A',
         ]);
+
+        $this->call([
+            GroupMusclesSeeder::class,
+            EquipmentsSeeder::class,
+            ExercisesSeeder::class,
+        ]);
     }
 }
